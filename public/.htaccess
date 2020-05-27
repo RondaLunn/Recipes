@@ -1,4 +1,4 @@
 RewriteEngine On
 RewriteCond %{SERVER_PORT} !=443
 RewriteRule ^(.*)$ https://recipes.rondalunn.com/$1 [R=301,L]
-ErrorDocument 404 https://recipes.rondalunn.com/
+ErrorDocument 404 /
