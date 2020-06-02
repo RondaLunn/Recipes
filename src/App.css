@@ -7,13 +7,16 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100vw;
 }
 
 body {
+  width: 100vw;
   margin: 0;
   padding: 0;
   font-size: 16px;
   color: #252525;
+  background-color: whitesmoke;
 }
 
 a {
@@ -32,9 +35,9 @@ li {
 }
 
 button {
-  background-color: #fff;
   border: none;
   font-size: 16px;
+  background-color: whitesmoke;
 }
 
 button:hover {
@@ -47,8 +50,9 @@ button:hover {
   padding: 10px;
 }
 
-.nav{
+.nav {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
 }
@@ -64,6 +68,10 @@ button:hover {
   padding-left: 0;
 }
 
+.nav-list {
+  margin-bottom: 0;
+}
+
 .center {
   text-align: center;
 }
@@ -71,6 +79,11 @@ button:hover {
 .authedUser-info {
   display: flex;
   flex-direction: row;
+  margin:0;
+}
+
+.authedUser-info p {
+  font-size: 0.8rem;
 }
 
 .header {
@@ -91,16 +104,17 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .btn {
   text-transform: uppercase;
-  margin: 0.5rem auto;
+  margin: 0.5rem 0;
   padding: 10px;
   border: 1px solid rgba(0,0,0,.29);
   background: #fff;
   font-size: 16px;
-  width: 250px;
+  width: 16rem;
   min-height: 3rem;
   position: relative;
   cursor: pointer;
@@ -147,6 +161,9 @@ button:hover {
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  background-color: white;
+  box-shadow: 2px 2px #EEE;
+  border-radius: 5px;
 }
 
 .recipe-thumb:hover {
@@ -158,9 +175,9 @@ button:hover {
 .recipe-image-thumb {
   width: 120px;
   height: 120px;
-  clip-path: circle(50%);
+  /* clip-path: circle(50%); */
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: 5px;
   margin: 10px;
 }
 
@@ -171,37 +188,49 @@ button:hover {
 }
 
 .recipe {
-  max-width: 600px;
-  padding: 10px;
+  width: 100%;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
 }
 
 .recipe-info {
-  margin: 10px;
+  margin-top: 1rem;
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+
+.recipe-admin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipe-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .recipe-thumb-info {
-  margin: 10px;
-  width: 10rem;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  margin: 10px;
+  width: 12rem;
 }
 
 .recipe-text {
-  width: 100%;
+  padding: 0 1.5rem;
 }
 
 .line-input {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
 }
 
 .line-item {
@@ -215,16 +244,23 @@ button:hover {
   align-items: center;
 } 
 
+.recipe-form-container {
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
 .recipe-form {
   margin: 10px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
 }
 
 .recipe-input {
-  margin: 0.5rem auto;
+  margin: 0.5rem 0;
   padding: 0.5rem;
   background: #fff;
   font-size: 16px;
@@ -233,7 +269,7 @@ button:hover {
 }
 
 .recipe-input-box {
-  margin: 0.5rem auto;
+  margin: 0.5rem 0;
   padding: 0.5rem;
   background: #fff;
   font-size: 16px;
@@ -242,7 +278,7 @@ button:hover {
 }
 
 .recipe-select {
-  margin: 0.5rem auto;
+  margin: 0.5rem 0;
   padding: 0.5rem;
   background: #fff;
   font-size: 16px;
@@ -255,6 +291,21 @@ button:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.recipe-image-thumb-input {
+  width: 50px;
+  height: 50px;
+  clip-path: circle(50%);
+  object-fit: cover;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+.recipe-image-caption-input {
+  align-self: center;
+  width: '5rem';
+  padding: '0.5rem';
 }
 
 .user {

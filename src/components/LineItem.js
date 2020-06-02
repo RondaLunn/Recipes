@@ -21,13 +21,19 @@ class LineItem extends Component {
         this.props.updateLine(e, field)
         this.toggleInput(e)
       }
+
+      keyPressed = (e, field) => {
+        if (e.key === 'Enter') {
+          this.changeItem(e, field)
+        }
+      }
     
     render() {
         const { item, field } = this.props
         return (
             <div id={item} className='line-item' draggable="true" onDragStart={this.props.handleDrag}>
                 <div style={{display:this.state.inputDisplay}}>
-                    <input defaultValue={item}/>
+                    <input defaultValue={item} onKeyPress={e => {this.keyPressed(e, field)}}/>
                     <button onClick={e => this.changeItem(e, field)}>Update</button>
                 </div>
                 

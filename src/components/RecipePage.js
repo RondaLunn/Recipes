@@ -7,9 +7,7 @@ class RecipePage extends Component {
         const { recipe_id } = this.props
 
         return (
-            <div>
-                <Recipe id={recipe_id} />
-            </div>
+            <Recipe id={recipe_id} />
         )
     }
 }

@@ -51,6 +51,7 @@ class Login extends Component {
             this.sendEmailVerification()
             const user = firebase.auth().currentUser
             const uid = user.uid
+            const  { dispatch } = this.props
             user.updateProfile({
               displayName: name
             })
@@ -96,8 +97,9 @@ class Login extends Component {
             console.log(response)
             message = 'Successfully signed in.'
             this.setState({message: message})
-            const user = firebase.auth().currentUser.uid
-            dispatch(setAuthedUser(user))
+            const name = firebase.auth().currentUser.displayName
+            const uid = firebase.auth().currentUser.uid
+            dispatch(setAuthedUser({name, uid}))
             dispatch(handleInitialData())
         })
         .catch(error => {
@@ -151,21 +153,10 @@ class Login extends Component {
           this.setState({message: message})
         });
       }
-
-    logout = () => {
-      let message = ''
-      firebase.auth().signOut()
-      .then(() => {
-        message = "Successfully logged out."
-      }).catch(function(error) {
-        message = "Error Logging out. Please try again. Error: " + error
-      })
-      this.setState({message: message})
-    }
     
     render() {
         return (
-            <div className="recipe">
+            <div className="recipe-login">
                 <h3 className='center'>{this.state.type === 'login' ? 'Log in' : 'Register'}</h3>
                 <button onClick={this.toggleLogin}>{this.state.type === 'login' ? 'New to Recipes? Click here to Register.' : 'Already have an account? Click here to Log In'}</button>
                 <div className="recipe-info">{this.state.message}</div>

@@ -3,6 +3,7 @@ import {
     _saveUser,
     _getRecipes,
     _saveRecipe,
+    _deleteRecipe,
   } from './_DATA.js'
 
   export const categories = [
@@ -31,4 +32,8 @@ import {
 
   export function saveUser (info) {
     return _saveUser(info)
+  }
+
+  export function deleteRecipe (id) {
+    return _deleteRecipe(id)
   }

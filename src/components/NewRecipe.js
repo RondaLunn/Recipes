@@ -62,15 +62,15 @@ class NewRecipe extends Component {
 
     handleAddImage = e => {
         e.preventDefault()
-        const imageURL = e.target.parentNode.childNodes[0].childNodes[0].value
-        const imageCaption = e.target.parentNode.childNodes[0].childNodes[1].value
+        const imageURL = document.getElementById('recipeImage').value
+        const imageCaption = document.getElementById('recipeImageCaption').value
         if (imageURL && imageCaption) {
             const image = {url: imageURL, caption: imageCaption}
             const imageList = this.state.images
             imageList.push(image)
             this.setState({images: imageList})
-            e.target.parentNode.childNodes[0].childNodes[0].value = ''
-            e.target.parentNode.childNodes[0].childNodes[1].value = ''
+            document.getElementById('recipeImage').value = ''
+            document.getElementById('recipeImageCaption').value = ''
         } else {
             alert('Please enter an image URL and caption')
         }
@@ -100,6 +100,17 @@ class NewRecipe extends Component {
         this.setState({ images: newList })
     }
 
+    keyPressed = (e, field) => {
+        if (e.key === 'Enter') {
+            this.handleAddLine(e, field)
+        }
+    }
+
+    imageKeyPressed = e => {
+        if (e.key === 'Enter') {
+            this.handleAddImage(e)
+        }
+    }
 
     handleDrag = e => {
         e.dataTransfer.setData('text', e.target.id)
@@ -203,10 +214,11 @@ class NewRecipe extends Component {
         return (
             <div className="recipe">
                 <h3 className='center'>Add a New Recipe</h3>
-                <div className='recipe-info'>
+                <div className='recipe-form-container'>
                     <form className='recipe-form' onSubmit={this.handleSubmit}>
                         <label htmlFor="recipeTitle">Recipe Title:</label>
                         <input 
+                        id='recipeTitle'
                         name='recipeTitle'
                         type='text'
                         className='recipe-input'
@@ -224,6 +236,7 @@ class NewRecipe extends Component {
 
                         <label htmlFor="recipePrepTime">Prep Time:</label>
                         <input 
+                        id='recipePrepTime'
                         name='recipePrepTime'
                         type='text'
                         className='recipe-input'
@@ -233,6 +246,7 @@ class NewRecipe extends Component {
 
                         <label htmlFor="recipeCookTime">Cook Time:</label>
                         <input 
+                        id='recipeCookTime'
                         name='recipeCookTime'
                         type='text'
                         className='recipe-input'
@@ -242,6 +256,7 @@ class NewRecipe extends Component {
 
                         <label htmlFor="recipeServings">Servings:</label>
                         <input 
+                        id='recipeServings'
                         name='recipeServings'
                         type='number'
                         className='recipe-input'
@@ -253,12 +268,14 @@ class NewRecipe extends Component {
                         <div>
                             <div className='line-input'>
                             <input 
+                            id='recipeIngredients'
                             name='recipeIngredients'
                             type='text'
                             className='recipe-input'
                             placeholder='Ingredient' 
+                            onKeyPress={e => this.keyPressed(e, 'ingredients')}
                             />
-                            <button className='add-btn' onClick={e => this.handleAddLine(e, 'ingredients')}>+</button>
+                            <button className='add-btn' onKeyPress={this.keyPressed} onClick={e => this.handleAddLine(e, 'ingredients')}>+</button>
                             </div>
                             <div>
                             {this.state.ingredients.map(ingredient => (
@@ -272,11 +289,13 @@ class NewRecipe extends Component {
                         <div>
                             <div className='line-input'>
                             <textarea 
+                            id='recipeInstructions'
                             name='recipeInstructions'
                             type='text'
                             rows='5'
                             className='recipe-input-box'
                             placeholder='Step' 
+                            onKeyPress={e => this.keyPressed(e, 'instructions')}
                             />
                             <button className='add-btn' onClick={e => this.handleAddLine(e, 'instructions')}>+</button>
                             </div><div>
@@ -289,6 +308,7 @@ class NewRecipe extends Component {
 
                         <label htmlFor="recipeNotes">Notes:</label>
                         <textarea 
+                        id='recipeNotes'
                         name='recipeNotes'
                         type='text'
                         rows='5'
@@ -302,16 +322,20 @@ class NewRecipe extends Component {
                             <div className='line-input'>
                             <div className='recipe-image-input'>
                                 <input 
+                                id='recipeImage'
                                 name='recipeImage'
                                 type='text'
                                 className='recipe-input'
                                 placeholder='Image URL' 
+                                onKeyPress={this.imageKeyPressed}
                                 />
                                 <input 
+                                id='recipeImageCaption'
                                 name='recipeImageCaption'
                                 type='text'
                                 className='recipe-input'
                                 placeholder='Image Caption' 
+                                onKeyPress={this.imageKeyPressed}
                                 />
                             </div>
                             <button className='add-btn' onClick={e => this.handleAddImage(e)}>+</button>
@@ -326,13 +350,15 @@ class NewRecipe extends Component {
                         <label htmlFor="recipeTags">Tags:</label>
                         <div>
                             <div className='line-input'>
-                        <input 
-                        name='recipeTags'
-                        type='text'
-                        className='recipe-input'
-                        placeholder='chicken, gluten-free, vegan, etc.' 
-                        />
-                        <button className='add-btn' onClick={e => this.handleAddLine(e, 'tags')}>+</button>
+                            <input 
+                            id='recipeTags'
+                            name='recipeTags'
+                            type='text'
+                            className='recipe-input'
+                            placeholder='chicken, gluten-free, vegan, etc.' 
+                            onKeyPress={e => this.keyPressed(e, 'tags')} 
+                            />
+                            <button className='add-btn' onClick={e => this.handleAddLine(e, 'tags')}>+</button>
                         </div><div>
                         {this.state.tags.map(tag => (
                             <div key={tag}>
@@ -351,11 +377,4 @@ class NewRecipe extends Component {
     }
 }
 
-function mapStateToProps ({ authedUser }) {
-    return {
-        authedUser
-    }
-
-}
-
-export default withRouter(connect(mapStateToProps)(NewRecipe))
+export default withRouter(connect()(NewRecipe))

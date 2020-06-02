@@ -6,14 +6,15 @@ class Login extends Component {
     handleUserLogin = (e) => {
         e.preventDefault()
         const { dispatch } = this.props
+        const name = e.target.value
 
-        dispatch(setAuthedUser(e.target.value))
+        dispatch(setAuthedUser({name, uid: name}))
     }
 
     render() {
         const { userIDs } = this.props
         return (
-            <div className='recipe'>
+            <div className='recipe-login'>
                 <h3 className='center'>Log in</h3>
                 <form className='recipe-info'>
                 <select 
@@ -30,10 +31,9 @@ class Login extends Component {
     }
 }
  
-function mapStateToProps ({ authedUser, users }) {
+function mapStateToProps ({ users }) {
     const userIDs = Object.keys(users)
     return {
-        authedUser,
         userIDs
     }
 

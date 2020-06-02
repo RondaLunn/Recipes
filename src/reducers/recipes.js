@@ -1,4 +1,4 @@
-import { RECEIVE_RECIPES, ADD_RECIPE } from '../actions/recipes'
+import { RECEIVE_RECIPES, ADD_RECIPE, REMOVE_RECIPE } from '../actions/recipes'
 
 export default function recipes (state = {}, action) {
     switch(action.type) {
@@ -12,6 +12,9 @@ export default function recipes (state = {}, action) {
                 ...state,
                 [action.recipe.id]: action.recipe,
             }
+        case REMOVE_RECIPE:
+            delete state[action.id]
+            return state
         default:
             return state
     }

@@ -1,6 +1,4 @@
 import axios from 'axios'
-import * as firebase from "firebase/app"
-import "firebase/auth"
 
 let users = {
   Ronda: {
@@ -14,6 +12,7 @@ let recipes = {
     id: 'hgfeiuhgbg1',
     timestamp: Date.now(),
     author: 'Ronda',
+    uid: 'qgw2sACRQ9MIYT4Fpwm4K2lWgDn2',
     recipeText: {
       title: 'Test Recipe',
       category: 'dessert',
@@ -48,16 +47,6 @@ function generateID () {
 }
 
 export function _getUsers () {  
-
-  firebase.auth().onAuthStateChanged(user => {
-    if (user){
-      const uid = user.uid
-      const name = user.displayName
-
-      ///setAuthedUser
-    }
-  })
-
   const url = '/api/users.php'
   axios.get(url).then(response => response.data)
   .then(data => {
@@ -81,13 +70,13 @@ export function _getRecipes () {
   axios.get(url).then(response => response.data)
   .then(data => {
     Array.isArray(data) && data.forEach(recipe => {
-      const { timestamp, author, title, category, servings, ingredients, instructions, notes, tags, images} = recipe
+      const { timestamp, author, uid, title, category, servings, ingredients, instructions, notes, tags, images} = recipe
       let id = recipe.recipe_id
       let prepTime = recipe.prep_time
       let cookTime = recipe.cook_time
-      let ingredientList = JSON.parse(ingredients)//ingredients === '' ? [] : ingredients.split(',')
-      let instructionList = JSON.parse(instructions)//instructions === '' ? [] : instructions.split(',')
-      let tagList = JSON.parse(tags)//tags === '' ? [] : tags.split(',')
+      let ingredientList = JSON.parse(ingredients)
+      let instructionList = JSON.parse(instructions)
+      let tagList = JSON.parse(tags)
       let imageList = JSON.parse(images)
       let recipeText = {
         title, 
@@ -103,7 +92,7 @@ export function _getRecipes () {
       }
       recipes = {
         ...recipes,
-        [id]: {id, timestamp, author, recipeText}
+        [id]: {id, timestamp, author, uid, recipeText}
       }
     })
   })
@@ -112,11 +101,12 @@ export function _getRecipes () {
   })
 }
 
-function formatRecipe (recipeText, author) {
+function formatRecipe (recipeText, author, uid) {
   return {
     id: generateID(),
     timestamp: Date.now(),
     author,
+    uid,
     recipeText: recipeText,
   }
 }
@@ -142,13 +132,14 @@ export function _saveUser (user) {
 
 export function _saveRecipe (recipeInfo) {
   return new Promise((res, rej) => {
-    const  { recipeText, author } = recipeInfo
-    const formattedRecipe = formatRecipe(recipeText, author)
+    const  { recipeText, author, uid } = recipeInfo
+    const formattedRecipe = formatRecipe(recipeText, author, uid)
 
     let formData = new FormData()
     formData.append('recipe_id', formattedRecipe.id)
     formData.append('timestamp', formattedRecipe.timestamp)
     formData.append('author', author)
+    formData.append('uid', uid)
     formData.append('title', recipeText.title)
     formData.append('category', recipeText.category)
     formData.append('prep_time', recipeText.prepTime)
@@ -172,16 +163,29 @@ export function _saveRecipe (recipeInfo) {
         [formattedRecipe.id]: formattedRecipe
       }
       
-      users = {
-        ...users,
-        [author]: {
-          ...users[author],
-          recipes: users[author].recipes.concat([formattedRecipe.id])
-        }
-      }
+      // users = {
+      //   ...users,
+      //   [author]: {
+      //     ...users[author],
+      //     recipes: users[author].recipes.concat([formattedRecipe.id])
+      //   }
+      // }
 
       res(formattedRecipe)
     }, 1000)
+    })
+  })
+}
+
+export function _deleteRecipe (recipeID) {
+  return new Promise((res, rej) => {
+    const url = `/api/recipes.php`
+      axios.delete(url, {params: {id: recipeID}})
+        .then((response) => {
+          setTimeout(() => {
+            delete recipes[recipeID]
+            res(recipeID)
+          }, 1000)
     })
   })
 }

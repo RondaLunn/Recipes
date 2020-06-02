@@ -19,19 +19,18 @@ class RecipeThumb extends Component {
 
                 <div className='recipe-thumb-info'>
                     <h3>{recipeText.title}</h3>
-                    <p>Added by {author.name}</p>
+                    <p>Added by {author}</p>
                 </div>
             </Link>
         )
     }
 }
 
-function mapStateToProps ({authedUser, recipes, users}, {id}) {
+function mapStateToProps ({recipes}, {id}) {
     const recipe = recipes[id] ? recipes[id] : null
-    const author = recipe ? users[recipe.author] : null
+    const author = recipe ? recipe.author : null
 
     return {
-        authedUser,
         recipe: recipe,
         author: author
     }

@@ -2,8 +2,10 @@ import { getInitialData } from '../utils/api'
 import { receiveUsers } from '../actions/users'
 import { receiveRecipes } from './recipes'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
+import { setAuthedUser } from '../actions/authedUser'
 
-export const AUTHED_ID = 'Ronda'
+import * as firebase from "firebase/app"
+import "firebase/auth"
 
 export function handleInitialData() {
     return dispatch => {
@@ -12,6 +14,13 @@ export function handleInitialData() {
             .then(({ users, recipes }) => {
             dispatch(receiveUsers(users))
             dispatch(receiveRecipes(recipes))
+            firebase.auth().onAuthStateChanged(user => {
+                if (user){
+                    const name = user.displayName
+                    const uid = user.uid
+                    dispatch(setAuthedUser({name, uid}))
+                }
+              })
             dispatch(hideLoading())
             })
     }

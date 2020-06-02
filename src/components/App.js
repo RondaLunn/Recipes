@@ -12,8 +12,6 @@ import LoadingBar from 'react-redux-loading-bar'
 
 import Navigation from './Navigation'
 import Login from './Login'
-import TestLogin from './TestLogin'
-import Register from './Register'
 import Home from './Home'
 import NewRecipe from './NewRecipe'
 import RecipePage from './RecipePage'
@@ -21,13 +19,12 @@ import NotFound from './NotFound'
 
 import '../App.css'
 
-
-
 class App extends Component {
   componentDidMount() {      
     const url = '/api/config.php'
     axios.get(url).then(response => response.data).then(data => {
       const firebaseConfig = data
+
       firebase.initializeApp(firebaseConfig)
 
       const { dispatch } = this.props
@@ -43,12 +40,10 @@ class App extends Component {
           <Navigation />
           <div className='header'>
             <img src={require('../logo192.png')} alt='Recipes logo' className='recipe-logo'/>
-            <h2 className='center'>Recipes</h2>
+            <h1 className='center'>Recipes</h1>
           </div>
-          {this.props.loading && <Login /> }
-          {this.props.loading && <TestLogin />}
           {this.props.loading
-          ? <Register/>
+          ? <Login />
           : <Fragment>
               <Switch>
                 <Route exact path='/' render ={() => (

@@ -118,7 +118,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="recipe">
+      <div className="recipe-login">
         <h3 className='center'>{this.state.type === 'login' ? 'Log in' : 'Register'}</h3>
         <button onClick={this.toggleLogin}>{this.state.type === 'login' ? 'New to Recipes? Click here to Register.' : 'Already have an account? Click here to Log In'}</button>
         <div className="recipe-info">{this.state.message}</div>
@@ -151,10 +151,9 @@ class Login extends Component {
   }
 }
 
-function mapStateToProps ({ authedUser, users }) {
+function mapStateToProps ({ users }) {
     const userIDs = Object.keys(users)
     return {
-        authedUser,
         userIDs
     }
 

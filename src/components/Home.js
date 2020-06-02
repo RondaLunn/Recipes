@@ -13,7 +13,7 @@ class Home extends Component {
             <div className='recipe'>
                 <Link to="/add" className='center'>Add New Recipe</Link>
                 <ul className='dashboard'>
-                    {recipeIds.map((id) => (
+                    {recipeIds.map(id => (
                         <li key={id}>
                             <RecipeThumb id={id} />
                         </li>
@@ -24,10 +24,8 @@ class Home extends Component {
     }
 }
 
-function mapStateToProps( { authedUser, users, recipes } ){
-    const user = users[authedUser]
+function mapStateToProps( { recipes } ){
     return { 
-        user,
         recipeIds: Object.keys(recipes)
         .sort((a,b) => recipes[b].timestamp - recipes[a].timestamp)
     }

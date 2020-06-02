@@ -1,7 +1,4 @@
 <?php
-$cookie_name='loggedin';
-$cookie_value=true;
-if(isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == $cookie_value) {
   $file = '../../.env';
   $file_lines = file($file);
   $host_name = trim($file_lines[0]);
@@ -24,6 +21,7 @@ if(isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == $cookie_value) {
           $recipe_id = mysqli_real_escape_string($connect, $_POST['recipe_id']);
           $timestamp = $_POST['timestamp'];
           $author = mysqli_real_escape_string($connect, $_POST['author']);
+          $uid = mysqli_real_escape_string($connect, $_POST['uid']);
           $title = mysqli_real_escape_string($connect, $_POST['title']);
           $category = mysqli_real_escape_string($connect, $_POST['category']);
           $prep_time = mysqli_real_escape_string($connect, $_POST['prep_time']);
@@ -40,12 +38,12 @@ if(isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == $cookie_value) {
           } elseif ($update == 2) {
             $sql = "update recipes set item = '$item', quantity = $quantity, category = '$category' where id = $id";
           } else {
-            $sql = "insert into recipes (recipe_id, timestamp, author, title, category, prep_time, cook_time, servings, ingredients, instructions, notes, tags, images) values ('$recipe_id', $timestamp, '$author', '$title', '$category', '$prep_time', '$cook_time', $servings, '$ingredients', '$instructions', '$notes', '$tags', '$images')";
+            $sql = "insert into recipes (recipe_id, timestamp, author, uid, title, category, prep_time, cook_time, servings, ingredients, instructions, notes, tags, images) values ('$recipe_id', $timestamp, '$author', '$uid', '$title', '$category', '$prep_time', '$cook_time', $servings, '$ingredients', '$instructions', '$notes', '$tags', '$images')";
           }
           break;
         case 'DELETE':
           $id = $_GET['id'];
-          $sql = "delete from recipes where id = $id";
+          $sql = "delete from recipes where recipe_id = '$id'";
           break;
     }
 
@@ -69,5 +67,4 @@ if(isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == $cookie_value) {
 
     $connect->close();
   }
-}
 ?>

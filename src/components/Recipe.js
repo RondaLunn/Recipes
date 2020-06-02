@@ -3,11 +3,13 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 import ImageSlider from './ImageSlider'
+import AdminPanel from './AdminPanel'
 
 class Recipe extends Component {
 
     render() {
-        const { recipe, author } = this.props
+        const { authedUser, recipe, author, uid } = this.props
+        const user = authedUser.uid
 
         if (recipe === null) {
             return <p className='center'>Error 404: This recipe does not exist</p>
@@ -18,8 +20,9 @@ class Recipe extends Component {
 
         return (
             <div className="recipe">
-                <h3 className='center'>{recipeText.title}</h3>
-                <p className='center'>Added by {author.name}</p>
+                <h2 className='center'>{recipeText.title}</h2>
+                <p className='center'>Added by {author}</p>
+                {user === uid && <AdminPanel id={this.props.id} />}
                 
                 <div className='recipe-info'>
                     <div>
@@ -52,14 +55,16 @@ class Recipe extends Component {
     }
 }
 
-function mapStateToProps ({authedUser, recipes, users}, {id}) {
+function mapStateToProps ({authedUser, recipes}, {id}) {
     const recipe = recipes[id] ? recipes[id] : null
-    const author = recipe ? users[recipe.author] : null
+    const author = recipe ? recipe.author : null
+    const uid = recipe ? recipe.uid : null
 
     return {
         authedUser,
         recipe: recipe,
-        author: author
+        author: author,
+        uid: uid
     }
 
 }
