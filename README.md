@@ -93,7 +93,7 @@ Recipes include:
 | Attribute | Type | Description |
 |-----------------|------------------|-------------------|
 | id                  | String | The question’s unique identifier |
-| timestamp                  | String | The question’s creation/edit date and time |
+| timestamp                  | Int | The question’s creation/edit date and time |
 | author        | String | The author’s name |
 | uid        | String | The author’s unique identifier |
 | recipeText | Object | The recipe data (The following attributes are properties of recipeText) |
@@ -158,7 +158,7 @@ Your code will talk to the database via the following methods:
 | Attribute | Type | Description |
 |-----------------|------------------|-------------------|
 | id | String | The id of the recipe that was posted |
-| timestamp | String | The time when the recipe was created |
+| timestamp | Int | The time when the recipe was created |
 | author | String | The name of the user who posted the recipe |
 | uid | String | The id of the user who posted the recipe |
 | recipeText | Object | The object has the properties which contain the recipe's information |
