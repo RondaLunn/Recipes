@@ -187,9 +187,9 @@ Your code will talk to the database via the following methods:
 
 6) `_deleteRecipe(recipeID)` Method
 
-*Description*: Delete a recipe from the database.
-*Parameters*: A string representing the id of the recipe to delete.
-*Return Value*:  A string representing the id of the deleted recipe.
+*Description*: Delete a recipe from the database.  
+*Parameters*: A string representing the id of the recipe to delete.  
+*Return Value*:  A string representing the id of the deleted recipe.  
 
 ## Available Scripts
 
