@@ -3,6 +3,7 @@ import {
     _saveUser,
     _getRecipes,
     _saveRecipe,
+    _updateRecipe,
     _deleteRecipe,
   } from './_DATA.js'
 
@@ -28,6 +29,10 @@ import {
   
   export function saveRecipe (info) {
     return _saveRecipe(info)
+  }
+
+  export function updateRecipe (info) {
+    return _updateRecipe(info)
   }
 
   export function saveUser (info) {

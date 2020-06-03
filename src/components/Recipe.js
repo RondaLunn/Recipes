@@ -6,6 +6,9 @@ import ImageSlider from './ImageSlider'
 import AdminPanel from './AdminPanel'
 
 class Recipe extends Component {
+    componentDidMount() {
+        window.scrollTo(0,0)
+    }
 
     render() {
         const { authedUser, recipe, author, uid } = this.props
@@ -22,7 +25,7 @@ class Recipe extends Component {
             <div className="recipe">
                 <h2 className='center'>{recipeText.title}</h2>
                 <p className='center'>Added by {author}</p>
-                {user === uid && <AdminPanel id={this.props.id} />}
+                {user === uid && <AdminPanel id={this.props.id}/>}
                 
                 <div className='recipe-info'>
                     <div>

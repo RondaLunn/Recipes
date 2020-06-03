@@ -34,9 +34,7 @@
           $images = mysqli_real_escape_string($connect, $_POST['images']);
           $update = $_POST['update'];
           if ($update == 1) {
-            $sql = "update recipes set removed = $removed where id = $id";
-          } elseif ($update == 2) {
-            $sql = "update recipes set item = '$item', quantity = $quantity, category = '$category' where id = $id";
+            $sql = "update recipes set timestamp = $timestamp, author = '$author', uid = '$uid', title = '$title', category = '$category', prep_time = '$prep_time', cook_time = '$cook_time', servings = $servings, ingredients = '$ingredients', instructions = '$instructions', notes = '$notes', tags = '$tags', images = '$images' where recipe_id = '$recipe_id'";
           } else {
             $sql = "insert into recipes (recipe_id, timestamp, author, uid, title, category, prep_time, cook_time, servings, ingredients, instructions, notes, tags, images) values ('$recipe_id', $timestamp, '$author', '$uid', '$title', '$category', '$prep_time', '$cook_time', $servings, '$ingredients', '$instructions', '$notes', '$tags', '$images')";
           }

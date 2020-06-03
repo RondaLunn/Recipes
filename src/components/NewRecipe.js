@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { handleAddRecipe } from '../actions/recipes'
+import { handleAddRecipe, handleUpdateRecipe } from '../actions/recipes'
 import { withRouter } from 'react-router-dom'
 
 import { categories } from '../utils/api'
@@ -10,6 +10,8 @@ import LineImage from './LineImage'
 
 class NewRecipe extends Component {
     state = {
+        header: 'Add a New Recipe',
+        edit: false,
         title: '',
         category: 'category',
         prepTime: '',
@@ -176,7 +178,7 @@ class NewRecipe extends Component {
         e.preventDefault()
         if (this.checkComplete()) {
             const { title, category, prepTime, cookTime, servings, ingredients, instructions, notes, tags, images } = this.state
-            const { dispatch } = this.props
+            const { dispatch, recipeID } = this.props
 
             const recipeText = {
                 title,
@@ -191,29 +193,52 @@ class NewRecipe extends Component {
                 images,
             }
 
-            dispatch(handleAddRecipe(recipeText))
-
-            this.setState(() => ({
-                title: '',
-                category: 'category',
-                prepTime: '',
-                cookTime: '',
-                servings: '',
-                ingredients: [],
-                instructions: [],
-                notes: '',
-                tags: [],
-                images: [],
-            }))
-
-            this.props.history.push('/')   
+            if (this.state.edit) {
+                dispatch(handleUpdateRecipe(recipeText, recipeID))
+                this.props.closeModal()
+            } else {
+                dispatch(handleAddRecipe(recipeText))
+                this.setState(() => ({
+                    title: '',
+                    category: 'category',
+                    prepTime: '',
+                    cookTime: '',
+                    servings: '',
+                    ingredients: [],
+                    instructions: [],
+                    notes: '',
+                    tags: [],
+                    images: [],
+                }))
+                this.props.history.push({pathname: '/', toTop: true}) 
+            }
         }     
+    }
+
+    componentDidMount() {
+        if(this.props.recipeInfo) {
+            const { title, category, prepTime, cookTime, servings, ingredients, instructions, notes, tags, images } = this.props.recipeInfo
+            this.setState(() => ({
+                header: 'Edit Recipe',
+                edit: true,
+                title: title,
+                category: category,
+                prepTime: prepTime,
+                cookTime: cookTime,
+                servings: servings,
+                ingredients: ingredients,
+                instructions: instructions,
+                notes: notes,
+                tags: tags,
+                images: images,
+            }))
+        }
     }
 
     render() {
         return (
             <div className="recipe">
-                <h3 className='center'>Add a New Recipe</h3>
+                <h3 className='center'>{this.state.header}</h3>
                 <div className='recipe-form-container'>
                     <form className='recipe-form' onSubmit={this.handleSubmit}>
                         <label htmlFor="recipeTitle">Recipe Title:</label>

@@ -1,4 +1,4 @@
-import { saveRecipe, deleteRecipe } from '../utils/api'
+import { saveRecipe, updateRecipe, deleteRecipe } from '../utils/api'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 //import { handleUserRecipe } from './users'
 
@@ -35,6 +35,29 @@ export function handleAddRecipe (recipeText) {
             recipeText,
             author: authedUser.name,
             uid: authedUser.uid
+        })
+        .then(recipe => {
+            dispatch(addRecipe(recipe))
+            //dispatch(handleUserRecipe(recipe.id))
+        })
+        .then(() => {
+            dispatch(hideLoading())
+        })
+        .catch(() => {
+            alert('There was an error saving your recipe. Please try again.')
+        })
+    }
+}
+
+export function handleUpdateRecipe (recipeText, recipeID) {
+    return (dispatch, getState) => {
+        const { authedUser } = getState()
+        dispatch(showLoading())
+        return updateRecipe({
+            recipeText,
+            author: authedUser.name,
+            uid: authedUser.uid,
+            recipeID 
         })
         .then(recipe => {
             dispatch(addRecipe(recipe))

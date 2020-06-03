@@ -101,9 +101,9 @@ export function _getRecipes () {
   })
 }
 
-function formatRecipe (recipeText, author, uid) {
+function formatRecipe (recipeText, author, uid, recipeID=generateID()) {
   return {
-    id: generateID(),
+    id: recipeID,
     timestamp: Date.now(),
     author,
     uid,
@@ -177,11 +177,51 @@ export function _saveRecipe (recipeInfo) {
   })
 }
 
+export function _updateRecipe (recipeInfo) {
+  return new Promise((res, rej) => {
+    const  { recipeText, author, uid, recipeID } = recipeInfo
+    const formattedRecipe = formatRecipe(recipeText, author, uid, recipeID)
+
+    let formData = new FormData()
+    formData.append('recipe_id', recipeID)
+    formData.append('timestamp', formattedRecipe.timestamp)
+    formData.append('author', author)
+    formData.append('uid', uid)
+    formData.append('title', recipeText.title)
+    formData.append('category', recipeText.category)
+    formData.append('prep_time', recipeText.prepTime)
+    formData.append('cook_time', recipeText.cookTime)
+    formData.append('servings', recipeText.servings)
+    formData.append('ingredients', JSON.stringify(recipeText.ingredients))
+    formData.append('instructions', JSON.stringify(recipeText.instructions))
+    formData.append('notes', recipeText.notes)
+    formData.append('tags', JSON.stringify(recipeText.tags))
+    formData.append('images', JSON.stringify(recipeText.images))
+    formData.append('update', 1)
+    axios({
+      method: 'post',
+      url: '/api/recipes.php',
+      data: formData,
+      config: { headers: {'Content-Type': 'multipart/form-data'}}
+    })
+    .then(() => {
+      setTimeout(() => {
+      recipes = {
+        ...recipes,
+        [recipeID]: formattedRecipe
+      }
+
+      res(formattedRecipe)
+    }, 1000)
+    })
+  })
+}
+
 export function _deleteRecipe (recipeID) {
   return new Promise((res, rej) => {
     const url = `/api/recipes.php`
       axios.delete(url, {params: {id: recipeID}})
-        .then((response) => {
+        .then(() => {
           setTimeout(() => {
             delete recipes[recipeID]
             res(recipeID)

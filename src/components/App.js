@@ -24,7 +24,7 @@ class App extends Component {
     const url = '/api/config.php'
     axios.get(url).then(response => response.data).then(data => {
       const firebaseConfig = data
-
+      
       firebase.initializeApp(firebaseConfig)
 
       const { dispatch } = this.props

@@ -208,6 +208,15 @@ button:hover {
   justify-content: center;
 }
 
+.recipe-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 18rem;
+  margin: auto;
+}
+
 .recipe-login {
   display: flex;
   flex-direction: column;
@@ -245,14 +254,12 @@ button:hover {
 } 
 
 .recipe-form-container {
-  margin: 10px;
   display: flex;
   justify-content: center;
   flex-direction: row;
 }
 
 .recipe-form {
-  margin: 10px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
