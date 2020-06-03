@@ -70,6 +70,127 @@ The values listed above are example values. You will need to insert the values s
     └── index.js # You should not need to modify this file. It is used for DOM rendering only.
 ```
 
+## Data
+
+There are two types of objects stored in our database:
+
+* Users
+* Recipes
+
+### Users
+
+Users include:
+
+| Attribute    | Type             | Description           |
+|-----------------|------------------|-------------------         |
+| id                 | String           | The user’s unique identifier |
+| name          | String           | The user’s name     |
+
+### Recipes
+
+Recipes include:
+
+| Attribute | Type | Description |
+|-----------------|------------------|-------------------|
+| id                  | String | The question’s unique identifier |
+| timestamp                  | String | The question’s creation/edit date and time |
+| author        | String | The author’s name |
+| uid        | String | The author’s unique identifier |
+| recipeText | Object | The recipe data (The following attributes are properties of recipeText) |
+| title | String | The title of the recipe |
+| category | String | The meal category of the recipe |
+| prepTime        | String | The time it takes to prep the recipe |
+| cookTime        | String | The time it takes to cook the recipe |
+| servings        | Int | The recipe's number of servings |
+| ingredients        | Array | The list of ingredients used in the recipe |
+| instructions        | Array | The list of steps to make the recipe |
+| notes        | String | Additional notes for the recipe |
+| tags        | Array | The list of tags that can be used for search/filtering |
+| images        | Array | The list of images for the recipe (The images array contains objects with the url and caption properties below) |
+| url        | String | The url where the image is hosted |
+| caption        | String | The caption associated with the image and used for the alt property |
+
+Your code will talk to the database via the following methods:
+
+* `_getUsers()`
+* `_getRecipes()`
+* `_saveUser(user)`
+* `_saveRecipe(recipeInfo)`
+* `_updateRecipe(recipeInfo)`
+* `_deleteRecipe(recipeID)`
+
+1) `_getUsers()` Method
+
+*Description*: Get all of the existing users from the database.  
+*Return Value*: Object where the key is the user’s id and the value is the user object.
+
+2) `_getRecipes()` Method
+
+*Description*: Get all of the existing recipes from the database.  
+*Return Value*: Object where the key is the recipe’s id and the value is the recipe object.
+
+3) `_saveUser(user)` Method
+
+*Description*: Save a new user to the database or update user information.  
+*Parameters*:  Object that includes the following properties: `username`, `name`, and `recipes`. More details about these properties:
+
+| Attribute | Type | Description |
+|-----------------|------------------|-------------------|
+| author | String | The id of the user |
+| name | String | The name of the user |
+| recipes | Array | The list of recipes created by the user |
+
+*Return Value*:  The user object.
+
+4) `_saveRecipe(recipeInfo)` Method
+
+*Description*: Save a new recipe to the database.  
+*Parameters*:  Object that includes the following properties: `recipeText`, `author`, and `uid`. More details about these properties:
+
+| Attribute | Type | Description |
+|-----------------|------------------|-------------------|
+| recipeText | Object | The recipe data |
+| author | String | The name of the user who created the recipe (The authedUser) |
+| uid | String | The unique identifier of the user who created the recipe (The authedUser) |
+
+*Return Value*:  An object that has the following properties: `id`, `timestamp`, `author`, `uid`, `recipeText`. More details about these properties:
+
+| Attribute | Type | Description |
+|-----------------|------------------|-------------------|
+| id | String | The id of the recipe that was posted |
+| timestamp | String | The time when the recipe was created |
+| author | String | The name of the user who posted the recipe |
+| uid | String | The id of the user who posted the recipe |
+| recipeText | Object | The object has the properties which contain the recipe's information |
+
+5) `_updateRecipe(recipeInfo)` Method
+
+*Description*: Update an existing recipe in the database.  
+*Parameters*:  Object that includes the following properties: `recipeText`, `author`, `uid`, and `recipeID`. More details about these properties:
+
+| Attribute | Type | Description |
+|-----------------|------------------|-------------------|
+| recipeText | Object | The recipe data |
+| author | String | The name of the user who created the recipe (The authedUser) |
+| uid | String | The unique identifier of the user who created the recipe (The authedUser) |
+| recipeID | String | The unique identifier of the recipe to edit |
+
+*Return Value*:  An object that has the following properties: `id`, `timestamp`, `author`, `uid`, `recipeText`. More details about these properties:
+
+| Attribute | Type | Description |
+|-----------------|------------------|-------------------|
+| id | String | The id of the recipe that was posted |
+| timestamp | String | The time when the recipe was created |
+| author | String | The name of the user who posted the recipe |
+| uid | String | The id of the user who posted the recipe |
+| recipeText | Object | The object has the properties which contain the recipe's information |
+
+6) `_deleteRecipe(recipeID)` Method
+
+*Description*: Delete a recipe from the database.
+*Parameters*: A string representing the id of the recipe to delete.
+*Return Value*:  A string representing the id of the deleted recipe.
+
 ## Available Scripts
 
 In the project directory, you can run:
