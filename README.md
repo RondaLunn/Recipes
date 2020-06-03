@@ -34,36 +34,36 @@ The values listed above are example values. You will need to insert the values s
 |   |   ├── recipes.php # API for accessing recipe information from the database.
 |   |   └── users.php # API for accessing user information from the database.
 └── src
-|   └── actions
-        ├── authedUser.js # This file contains the actions and action creators for the logged in    user.
-        ├── recipes.js # This file contains the actions and action creators for the recipe data.
-        ├── shared.js # This file contains the actions and action creators for getting the initial data for the app.
-        └── users.js # This file contains the actions and action creators for the user data.
-    └── components
-        ├── AdminPanel.js # This is the code for rendering the edit and delete options for user created recipes.
-        ├── App.js # This is the root of the app.
-        ├── Home.js # This is the code for rendering the main dashboard for the app.
-        ├── ImageSlider.js # This is the code for rendering an image slider.
-        ├── LineImage.js # This is the code for rendering previews for images added within the create/edit recipe form.
-        ├── LineItem.js # This is the code for rendering items added to a list within the create/edit recipe form.
-        ├── Login.js # This is the code for the login controller for the app.
-        ├── Navigation.js # This is the code for the navigation bar.
-        ├── NewRecipe.js # This is the code for the form to create a new recipe or edit an existing recipe.
-        ├── NotFound.js # This is the code for rendering the error 404 page.
-        ├── Recipe.js # This is the rendering code for each recipe.
-        ├── RecipePage.js # This is the code for the page that shows an individual recipe.
-        └── RecipeThumb.js # This is the rendering code for showing the preview thumbnail for a recipe on the main dashboard.
-    └── middleware
-        ├── index.js # This is the main middleware file which combines the middleware to create the store.
-        └── logger.js # This is the middleware for logging the actions performed and the new state. 
-    └── reducers
-        ├── authedUser.js # This the reducer for information regarding the logged in user.
-        ├── index.js # This is the main reducer file which combines the reducers to create the store.
-        ├── recipes.js # This the reducer for recipe data.
-        └── users.js # This the reducer for user data.
-    └── utils
-        ├── _DATA.js # This is the file containing methods for updating the state and database.
-        └── api.js # This is the file connecting the app to the API methods. 
+    ├── actions
+    |   ├── authedUser.js # This file contains the actions and action creators for the logged in    user.
+    |   ├── recipes.js # This file contains the actions and action creators for the recipe data.
+    |   ├── shared.js # This file contains the actions and action creators for getting the initial data for the app.
+    |   └── users.js # This file contains the actions and action creators for the user data.
+    ├── components
+    |   ├── AdminPanel.js # This is the code for rendering the edit and delete options for user created recipes.
+    |   ├── App.js # This is the root of the app.
+    |   ├── Home.js # This is the code for rendering the main dashboard for the app.
+    |   ├── ImageSlider.js # This is the code for rendering an image slider.
+    |   ├── LineImage.js # This is the code for rendering previews for images added within the create/edit recipe form.
+    |   ├── LineItem.js # This is the code for rendering items added to a list within the create/edit recipe form.
+    |   ├── Login.js # This is the code for the login controller for the app.
+    |   ├── Navigation.js # This is the code for the navigation bar.
+    |   ├── NewRecipe.js # This is the code for the form to create a new recipe or edit an existing recipe.
+    |   ├── NotFound.js # This is the code for rendering the error 404 page.
+    |   ├── Recipe.js # This is the rendering code for each recipe.
+    |   ├── RecipePage.js # This is the code for the page that shows an individual recipe.
+    |   └── RecipeThumb.js # This is the rendering code for showing the preview thumbnail for a recipe on the main dashboard.
+    ├── middleware
+    |   ├── index.js # This is the main middleware file which combines the middleware to create the store.
+    |   └── logger.js # This is the middleware for logging the actions performed and the new state. 
+    ├── reducers
+    |   ├── authedUser.js # This the reducer for information regarding the logged in user.
+    |   ├── index.js # This is the main reducer file which combines the reducers to create the store.
+    |   ├── recipes.js # This the reducer for recipe data.
+    |   └── users.js # This the reducer for user data.
+    ├── utils
+    |   ├── _DATA.js # This is the file containing methods for updating the state and database.
+    |   └── api.js # This is the file connecting the app to the API methods. 
     ├── App.css # Styles for your app. Feel free to customize this as you desire.
     ├── App.test.js # Used for testing. Provided with Create React App. Testing is encouraged, but not required.
     ├── index.css # Global styles. You probably won't need to change anything here.
