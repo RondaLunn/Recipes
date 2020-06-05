@@ -1,11 +1,6 @@
 import axios from 'axios'
 
-let users = {
-  Ronda: {
-    name: 'Ronda',
-    recipes: []
-  }
-}
+let user = {}
 
 let recipes = {
   hgfeiuhgbg1: {
@@ -38,7 +33,6 @@ let recipes = {
         },
       ],
     },
-    
   }
 }
 
@@ -46,21 +40,25 @@ function generateID () {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
-export function _getUsers () {  
+export function _getUser (uid) {  
   const url = '/api/users.php'
-  axios.get(url).then(response => response.data)
+  axios.get(url, {params: {uid}})
+  .then(response => response.data)
   .then(data => {
-    Array.isArray(data) && data.forEach(user => {
-      const { username, name, recipes }  = user
-      let recipeList = recipes === '' ? [] : recipes.split(',')
-      users = {
-        ...users,
-        [username]: {name, recipes: recipeList}
+    Array.isArray(data) && data.forEach(userInfo => {
+      const { uid, name, recipes, favorites }  = userInfo
+      let recipeList = JSON.parse(recipes)
+      let favoritesList = JSON.parse(favorites)
+      user = {
+        uid: uid, 
+        name, 
+        recipes: recipeList, 
+        favorites: favoritesList
       }
     })
   })
   return new Promise((res, rej) => {
-    setTimeout(() => res({...users}), 1000)
+    setTimeout(() => res({...user}), 1000)
   })
 }
 
@@ -101,6 +99,67 @@ export function _getRecipes () {
   })
 }
 
+export function _saveUser (newUser) {
+  return new Promise((res, rej) => {
+    const uid = newUser.uid
+    const name = newUser.name
+    const recipes = newUser.recipes
+    const favorites = newUser.favorites
+
+    let formData = new FormData()
+    formData.append('uid', uid)
+    formData.append('name', name)
+    formData.append('recipes', JSON.stringify(recipes))
+    formData.append('favorites', JSON.stringify(favorites))
+    axios({
+      method: 'post',
+      url: '/api/users.php',
+      data: formData,
+      config: { headers: {'Content-Type': 'multipart/form-data'}}
+    })
+    .then(() => {
+      setTimeout(() => {
+      user = {
+        uid, 
+        name, 
+        recipes,
+        favorites
+      }
+      res(user)
+    }, 1000)
+    })
+  })
+}
+
+export function _updateUser (user) {
+  return new Promise((res, rej) => {
+    const { uid, name, recipes, favorites } = user
+    let formData = new FormData()
+    formData.append('uid', uid)
+    formData.append('name', name)
+    formData.append('recipes', JSON.stringify(recipes))
+    formData.append('favorites', JSON.stringify(favorites))
+    formData.append('update', 1)
+    axios({
+      method: 'post',
+      url: '/api/users.php',
+      data: formData,
+      config: { headers: {'Content-Type': 'multipart/form-data'}}
+    })
+    .then(() => {
+      setTimeout(() => {
+        user = {
+          uid, 
+          name, 
+          recipes,
+          favorites
+        }
+        res(user)
+      }, 1000)
+    })
+  })
+}
+
 function formatRecipe (recipeText, author, uid, recipeID=generateID()) {
   return {
     id: recipeID,
@@ -109,25 +168,6 @@ function formatRecipe (recipeText, author, uid, recipeID=generateID()) {
     uid,
     recipeText: recipeText,
   }
-}
-
-export function _saveUser (user) {
-  return new Promise((res, rej) => {
-    const username = user.username
-    const name = user.name
-    const recipes = user.recipes
-
-    setTimeout(() => {
-      users = {
-        ...users,
-        [username]: {
-          name,
-          recipes
-        },
-      }
-      res(user)
-    }, 1000)
-  })
 }
 
 export function _saveRecipe (recipeInfo) {
@@ -163,14 +203,6 @@ export function _saveRecipe (recipeInfo) {
         [formattedRecipe.id]: formattedRecipe
       }
       
-      // users = {
-      //   ...users,
-      //   [author]: {
-      //     ...users[author],
-      //     recipes: users[author].recipes.concat([formattedRecipe.id])
-      //   }
-      // }
-
       res(formattedRecipe)
     }, 1000)
     })
@@ -210,7 +242,6 @@ export function _updateRecipe (recipeInfo) {
         ...recipes,
         [recipeID]: formattedRecipe
       }
-
       res(formattedRecipe)
     }, 1000)
     })
@@ -220,12 +251,17 @@ export function _updateRecipe (recipeInfo) {
 export function _deleteRecipe (recipeID) {
   return new Promise((res, rej) => {
     const url = `/api/recipes.php`
-      axios.delete(url, {params: {id: recipeID}})
-        .then(() => {
-          setTimeout(() => {
-            delete recipes[recipeID]
-            res(recipeID)
-          }, 1000)
+    const userRecipes = user.recipes.fiter(recipe => recipe.id !== recipeID)
+    axios.delete(url, {params: {id: recipeID}})
+      .then(() => {
+        setTimeout(() => {
+          delete recipes[recipeID]
+          user = {
+            ...user,
+            recipes: userRecipes
+          }
+          res(recipeID)
+        }, 1000)
     })
   })
 }

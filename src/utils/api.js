@@ -1,6 +1,7 @@
 import {
-    _getUsers,
+    _getUser,
     _saveUser,
+    _updateUser,
     _getRecipes,
     _saveRecipe,
     _updateRecipe,
@@ -18,25 +19,27 @@ import {
   ]
   
   export function getInitialData () {
-    return Promise.all([
-      _getUsers(),
-      _getRecipes(),
-    ]).then(([users, recipes]) => ({
-      users,
-      recipes,
-    }))
+    return _getRecipes()
+  }
+
+  export function getUser (uid) {
+    return _getUser(uid)
+  }
+
+  export function saveUser (user) {
+    return _saveUser(user)
+  }
+
+  export function updateUser (user) {
+    return _updateUser(user)
   }
   
-  export function saveRecipe (info) {
-    return _saveRecipe(info)
+  export function saveRecipe (recipe) {
+    return _saveRecipe(recipe)
   }
 
-  export function updateRecipe (info) {
-    return _updateRecipe(info)
-  }
-
-  export function saveUser (info) {
-    return _saveUser(info)
+  export function updateRecipe (recipe) {
+    return _updateRecipe(recipe)
   }
 
   export function deleteRecipe (id) {

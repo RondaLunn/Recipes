@@ -1,33 +1,18 @@
-import { RECEIVE_USERS, SAVE_USER_RECIPE, SAVE_USER } from '../actions/users'
+import { RECEIVE_USER, ADD_USER_UPDATE, ADD_USER } from '../actions/users'
 
 export default function users (state = {}, action) {
     switch(action.type) {
-        case RECEIVE_USERS:
+        case RECEIVE_USER:
             return {
                 ...state, 
-                ...action.users
+                ...action.user
             }
-        case SAVE_USER_RECIPE:
-            const { author, recipeId } = action
-            return {
-                ...state,
-                [author]: {
-                    ...state[author],
-                    recipes: state[author].recipes.concat([recipeId])
-                  }
-            }
-        case SAVE_USER:
+        case ADD_USER_UPDATE:
+            const { updatedUser } = action
+            return updatedUser
+        case ADD_USER:
             const { user } = action
-            const username = user.username
-            const name = user.name
-            const recipes = user.recipes
-            return {
-                ...state, 
-                [username]: {
-                    name,
-                    recipes
-                }
-            }
+            return user
         default:
             return state
     }

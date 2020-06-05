@@ -85,6 +85,8 @@ Users include:
 |-----------------|------------------|-------------------         |
 | id                 | String           | The user’s unique identifier |
 | name          | String           | The user’s name     |
+| recipes          | Array           | The recipes created by the user     |
+| favorites          | Array           | The recipes saved as favorites by the user     |
 
 ### Recipes
 
@@ -112,16 +114,17 @@ Recipes include:
 
 Your code will talk to the database via the following methods:
 
-* `_getUsers()`
+* `_getUser(id)`
 * `_getRecipes()`
 * `_saveUser(user)`
 * `_saveRecipe(recipeInfo)`
 * `_updateRecipe(recipeInfo)`
 * `_deleteRecipe(recipeID)`
 
-1) `_getUsers()` Method
+1) `_getUser(id)` Method
 
-*Description*: Get all of the existing users from the database.  
+*Description*: Get the data for the current user from the database.  
+*Parameters*:  String representing the user's id.  
 *Return Value*: Object where the key is the user’s id and the value is the user object.
 
 2) `_getRecipes()` Method
@@ -132,13 +135,14 @@ Your code will talk to the database via the following methods:
 3) `_saveUser(user)` Method
 
 *Description*: Save a new user to the database or update user information.  
-*Parameters*:  Object that includes the following properties: `username`, `name`, and `recipes`. More details about these properties:
+*Parameters*:  Object that includes the following properties: `uid`, `name`, `recipes`, and `favorites`. More details about these properties:
 
 | Attribute | Type | Description |
 |-----------------|------------------|-------------------|
-| author | String | The id of the user |
+| uid | String | The id of the user |
 | name | String | The name of the user |
 | recipes | Array | The list of recipes created by the user |
+| favorites          | Array           | The recipes saved as favorites by the user |
 
 *Return Value*:  The user object.
 

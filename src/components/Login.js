@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import * as firebase from "firebase/app"
 import "firebase/auth"
 
-import { setAuthedUser } from '../actions/authedUser'
 import { handleNewUser } from '../actions/users'
 import { handleInitialData } from '../actions/shared'
 
@@ -45,7 +44,7 @@ class Login extends Component {
         
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(() => {
-            message = 'Successfully Registered. Please sign in.'
+            message = 'Successfully Registered.'
             this.toggleLogin()
             this.setState({message: message})
             this.sendEmailVerification()
@@ -55,7 +54,8 @@ class Login extends Component {
             user.updateProfile({
               displayName: name
             })
-            dispatch(handleNewUser({uid, name, recipes: []}))
+            dispatch(handleNewUser({uid, name, recipes: [], favorites: []}))
+            dispatch(handleInitialData())
         })
         .catch(error => {
             var errorCode = error.code
@@ -93,13 +93,9 @@ class Login extends Component {
           }
 
         firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(response => {
-            console.log(response)
+        .then(() => {
             message = 'Successfully signed in.'
             this.setState({message: message})
-            const name = firebase.auth().currentUser.displayName
-            const uid = firebase.auth().currentUser.uid
-            dispatch(setAuthedUser({name, uid}))
             dispatch(handleInitialData())
         })
         .catch(error => {
