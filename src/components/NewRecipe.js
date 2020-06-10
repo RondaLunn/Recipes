@@ -22,6 +22,10 @@ class NewRecipe extends Component {
         notes: '',
         tags: [],
         images: [],
+        cookbooks: [],
+        favorites: [],
+        ratings: [],
+        comments: []
     }
 
     handleChange = (e, field) => {
@@ -177,7 +181,7 @@ class NewRecipe extends Component {
     handleSubmit = e => {
         e.preventDefault()
         if (this.checkComplete()) {
-            const { title, category, prepTime, cookTime, servings, ingredients, instructions, notes, tags, images } = this.state
+            const { title, category, prepTime, cookTime, servings, ingredients, instructions, notes, tags, images, cookbooks, favorites, ratings, comments } = this.state
             const { dispatch, recipeID } = this.props
 
             const recipeText = {
@@ -191,6 +195,10 @@ class NewRecipe extends Component {
                 notes,
                 tags,
                 images,
+                cookbooks, 
+                favorites, 
+                ratings, 
+                comments 
             }
 
             if (this.state.edit) {
@@ -209,6 +217,10 @@ class NewRecipe extends Component {
                     notes: '',
                     tags: [],
                     images: [],
+                    cookbooks: [],
+                    favorites: [],
+                    ratings: [],
+                    comments: []
                 }))
                 this.props.history.push({pathname: '/', toTop: true}) 
             }
@@ -216,8 +228,10 @@ class NewRecipe extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0,0)
+        
         if(this.props.recipeInfo) {
-            const { title, category, prepTime, cookTime, servings, ingredients, instructions, notes, tags, images } = this.props.recipeInfo
+            const { title, category, prepTime, cookTime, servings, ingredients, instructions, notes, tags, images, cookbooks, favorites, ratings, comments } = this.props.recipeInfo
             this.setState(() => ({
                 header: 'Edit Recipe',
                 edit: true,
@@ -231,6 +245,10 @@ class NewRecipe extends Component {
                 notes: notes,
                 tags: tags,
                 images: images,
+                cookbooks: cookbooks,
+                favorites: favorites,
+                ratings: ratings,
+                comments: comments
             }))
         }
     }

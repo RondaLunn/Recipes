@@ -7,22 +7,44 @@ import { setAuthedUser } from '../actions/authedUser'
 import * as firebase from "firebase/app"
 import "firebase/auth"
 
+// export function handleInitialData() {
+//     return dispatch => {
+//         dispatch(showLoading())
+//         return getInitialData()
+//             .then((recipes) => {
+//                 dispatch(receiveRecipes(recipes))
+//                 firebase.auth().onAuthStateChanged(user => {
+//                     if (user){
+//                         const name = user.displayName
+//                         const uid = user.uid
+//                         dispatch(setAuthedUser({name, uid}))
+//                         getUser(uid).then(currentUser => {
+//                             dispatch(receiveUser(currentUser))
+//                         })
+//                     }
+//                 })
+//                 dispatch(hideLoading())
+//             })
+//     }
+// }
+
 export function handleInitialData() {
     return dispatch => {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user){
+                const name = user.displayName
+                const uid = user.uid
+                dispatch(setAuthedUser({name, uid}))
+                getUser(uid).then(currentUser => {
+                    dispatch(receiveUser(currentUser))
+                })
+            }
+        })
         dispatch(showLoading())
         return getInitialData()
             .then((recipes) => {
                 dispatch(receiveRecipes(recipes))
-                firebase.auth().onAuthStateChanged(user => {
-                    if (user){
-                        const name = user.displayName
-                        const uid = user.uid
-                        dispatch(setAuthedUser({name, uid}))
-                        getUser(uid).then(currentUser => {
-                            dispatch(receiveUser(currentUser))
-                        })
-                    }
-                })
+                
                 dispatch(hideLoading())
             })
     }

@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import { connect } from 'react-redux'
 import * as firebase from "firebase/app"
 import "firebase/auth"
@@ -19,9 +19,9 @@ class Login extends Component {
     }
 
     register = (e) => {
-        let email = e.target.parentNode.childNodes[0].value
-        let name = e.target.parentNode.childNodes[1].value
-        let password = e.target.parentNode.childNodes[2].value
+        let email = document.getElementById('email').value
+        let name = document.getElementById('name').value
+        let password = document.getElementById('password').value
         let message = ''
 
         if (email.length < 4) {
@@ -54,7 +54,7 @@ class Login extends Component {
             user.updateProfile({
               displayName: name
             })
-            dispatch(handleNewUser({uid, name, recipes: [], favorites: []}))
+            dispatch(handleNewUser({uid, name, email, recipes: [], favorites: [], cookbooks: [], activity: []}))
             dispatch(handleInitialData())
         })
         .catch(error => {
@@ -74,9 +74,9 @@ class Login extends Component {
     }
 
     login = (e) => {
-        let email = e.target.parentNode.childNodes[0].value
-        let password = e.target.parentNode.childNodes[1].value
-        // let checked = e.target.parentNode.childNodes[2].childNodes[0].checked
+        let email = document.getElementById('email').value
+        let password = document.getElementById('password').value
+        // let checked = document.getElementById('remember').value
         // let persistence = checked ? 'LOCAL' : 'SESSION'
         let message = ''
         const { dispatch } = this.props
@@ -123,7 +123,7 @@ class Login extends Component {
     }
 
     sendPasswordReset = (e) => {
-        const email = e.target.parentNode.childNodes[0].value
+        const email = document.getElementById('email').value
         let message = ''
 
         if (email.length < 4) {
@@ -157,21 +157,26 @@ class Login extends Component {
                 <button onClick={this.toggleLogin}>{this.state.type === 'login' ? 'New to Recipes? Click here to Register.' : 'Already have an account? Click here to Log In'}</button>
                 <div className="recipe-info">{this.state.message}</div>
                 <div className="recipe-form">
+                <label htmlFor="email">Email:</label>
                 <input
                     type="email"
+                    id="email"
                     name="email"
                     placeholder="Email Address"
                     className="recipe-input"
                 />
                 {this.state.type === 'register' 
-                && <input
+                && <Fragment><label htmlFor="name">Name:</label><input
                     type="text"
+                    id="name"
                     name="name"
                     placeholder="Full Name"
                     className="recipe-input"
-                />}
+                /></Fragment>}
+                <label htmlFor="password">Password:</label>
                 <input
                     type="password"
+                    id="password"
                     name="password"
                     placeholder="Password"
                     className="recipe-input"
@@ -180,6 +185,7 @@ class Login extends Component {
                 && <div>
                   <input 
                     type='checkbox'
+                    id='remember'
                     name='remember'
                   />
                   <label for="remember">Keep me signed in (Do not use on a public device)</label>
@@ -187,7 +193,7 @@ class Login extends Component {
                 {this.state.type === 'login' 
                 ? <button className="btn" name="login" onClick={this.login}>Log In</button>
                 : <button className="btn" name="register" onClick={this.register}>Register</button>}
-                <button onClick={this.sendPasswordReset}>Forgot Password?</button>
+                <button onClick={this.sendPasswordReset}><p>Forgot Password?</p></button>
                 </div>
             </div>
         )

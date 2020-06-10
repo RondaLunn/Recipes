@@ -1,6 +1,6 @@
 import { saveRecipe, updateRecipe, deleteRecipe } from '../utils/api'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
-import { handleUserRecipe } from './users'
+import { handleUserRecipe, handleRemoveUserRecipe } from './users'
 
 export const RECEIVE_RECIPES = 'RECEIVE_RECIPES'
 export const ADD_RECIPE = 'ADD_RECIPE'
@@ -61,7 +61,6 @@ export function handleUpdateRecipe (recipeText, recipeID) {
         })
         .then(recipe => {
             dispatch(addRecipe(recipe))
-            //dispatch(handleUserRecipe(recipe.id))
         })
         .then(() => {
             dispatch(hideLoading())
@@ -78,7 +77,7 @@ export function handleRemoveRecipe (recipeID) {
         return deleteRecipe(recipeID)
         .then(() => {
             dispatch(removeRecipe(recipeID))
-            //dispatch(handleUserRecipe(id))
+            dispatch(handleRemoveUserRecipe(recipeID))
         })
         .then(() => {
             dispatch(hideLoading())

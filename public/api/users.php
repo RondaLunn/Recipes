@@ -22,13 +22,16 @@ if (mysqli_connect_errno()) {
         case 'POST':
           $uid = mysqli_real_escape_string($connect, $_POST['uid']);
           $name = mysqli_real_escape_string($connect, $_POST['name']);
+          $email = mysqli_real_escape_string($connect, $_POST['email']);
           $recipes = mysqli_real_escape_string($connect, $_POST['recipes']);
           $favorites = mysqli_real_escape_string($connect, $_POST['favorites']);
+          $cookbooks = mysqli_real_escape_string($connect, $_POST['cookbooks']);
+          $activity = mysqli_real_escape_string($connect, $_POST['activity']);
           $update = $_POST['update'];
           if ($update == 1) {
-            $sql = "update users set name = '$name', recipes = '$recipes', favorites = '$favorites' where uid = '$uid'";
+            $sql = "update users set name = '$name', email = '$email', recipes = '$recipes', favorites = '$favorites', cookbooks = '$cookbooks', activity = '$activity' where uid = '$uid'";
           } else {
-            $sql = "insert into users (uid, name, recipes, favorites) values ('$uid', '$name', '$recipes', '$favorites')";
+            $sql = "insert into users (uid, name, email, recipes, favorites, cookbooks, activity) values ('$uid', '$name', '$email', '$recipes', '$favorites', '$cookbooks', '$activity')";
           }
           break;
         case 'DELETE':

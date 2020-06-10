@@ -10,6 +10,7 @@ import { handleInitialData } from '../actions/shared'
 
 import LoadingBar from 'react-redux-loading-bar'
 
+import Header from './Header'
 import Navigation from './Navigation'
 import Login from './Login'
 import Home from './Home'
@@ -18,6 +19,7 @@ import RecipePage from './RecipePage'
 import NotFound from './NotFound'
 
 import '../App.css'
+import Profile from './Profile'
 
 class App extends Component {
   componentDidMount() {      
@@ -37,14 +39,14 @@ class App extends Component {
       <BrowserRouter >
         <Fragment>
           <LoadingBar style={{ backgroundColor: 'blue', height: '5px' }} />
-          <Navigation />
-          <div className='header'>
-            <img src={require('../logo192.png')} alt='Recipes logo' className='recipe-logo'/>
-            <h1 className='center'>Recipes</h1>
-          </div>
-          {this.props.loading
-          ? <Login />
-          : <Fragment>
+
+          <Header />
+
+          <Navigation />          
+
+          {!this.props.loggedin && <Login />}
+
+          {!this.props.loading && <Fragment>
               <Switch>
                 <Route exact path='/' render ={() => (
                     <Home />
@@ -53,6 +55,10 @@ class App extends Component {
                 <Route path='/add' render ={() => (
                   <NewRecipe />
                 )} /> 
+
+                <Route path='/profile' render ={() => (
+                  <Profile />
+                )} />
 
               <Route path='/recipes/:recipe_id' component={RecipePage}/>
               <Route component={NotFound} />
@@ -64,9 +70,10 @@ class App extends Component {
   }
 }
 
-function mapStateToProps ({ authedUser }) {
+function mapStateToProps ({ authedUser, recipes }) {
   return {
-    loading: authedUser === null
+    loading: Object.keys(recipes).length === 0,
+    loggedin: authedUser !== null
   }
 }
 

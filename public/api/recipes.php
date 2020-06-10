@@ -32,11 +32,15 @@
           $notes = mysqli_real_escape_string($connect, $_POST['notes']);
           $tags = mysqli_real_escape_string($connect, $_POST['tags']);
           $images = mysqli_real_escape_string($connect, $_POST['images']);
+          $cookbooks = mysqli_real_escape_string($connect, $_POST['cookbooks']);
+          $favorites = mysqli_real_escape_string($connect, $_POST['favorites']);
+          $ratings = mysqli_real_escape_string($connect, $_POST['ratings']);
+          $comments = mysqli_real_escape_string($connect, $_POST['comments']);
           $update = $_POST['update'];
           if ($update == 1) {
-            $sql = "update recipes set timestamp = $timestamp, author = '$author', uid = '$uid', title = '$title', category = '$category', prep_time = '$prep_time', cook_time = '$cook_time', servings = $servings, ingredients = '$ingredients', instructions = '$instructions', notes = '$notes', tags = '$tags', images = '$images' where recipe_id = '$recipe_id'";
+            $sql = "update recipes set timestamp = $timestamp, author = '$author', uid = '$uid', title = '$title', category = '$category', prep_time = '$prep_time', cook_time = '$cook_time', servings = $servings, ingredients = '$ingredients', instructions = '$instructions', notes = '$notes', tags = '$tags', images = '$images', cookbooks = '$cookbooks', favorites = '$favorites', ratings = '$ratings' , comments = '$comments' where recipe_id = '$recipe_id'";
           } else {
-            $sql = "insert into recipes (recipe_id, timestamp, author, uid, title, category, prep_time, cook_time, servings, ingredients, instructions, notes, tags, images) values ('$recipe_id', $timestamp, '$author', '$uid', '$title', '$category', '$prep_time', '$cook_time', $servings, '$ingredients', '$instructions', '$notes', '$tags', '$images')";
+            $sql = "insert into recipes (recipe_id, timestamp, author, uid, title, category, prep_time, cook_time, servings, ingredients, instructions, notes, tags, images, cookbooks, favorites, ratings, comments) values ('$recipe_id', $timestamp, '$author', '$uid', '$title', '$category', '$prep_time', '$cook_time', $servings, '$ingredients', '$instructions', '$notes', '$tags', '$images', '$cookbooks', '$favorites', '$ratings', '$comments')";
           }
           break;
         case 'DELETE':

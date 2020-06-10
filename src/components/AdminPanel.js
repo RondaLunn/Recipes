@@ -15,7 +15,9 @@ class AdminPanel extends Component {
     deleteRecipe = () => {
         const { dispatch } = this.props
         dispatch(handleRemoveRecipe(this.props.id))
-        this.props.history.replace({pathname: '/', toTop: true})  
+        .then(() => {
+            this.props.history.replace({pathname: '/', toTop: true})
+        })
     }
 
     editRecipe = () => {

@@ -2,39 +2,36 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
 
-import RecipeThumb from './RecipeThumb'
+import RecipeList from './RecipeList'
 
 class Home extends Component {
+
     componentDidMount() {
-        if(this.props.location) {
-            if(this.props.location.toTop){
+        const { location } = this.props
+
+        if(location) {
+            if(location.toTop){
                 window.scrollTo(0,0)
             }
         }
     }
 
     render () {
-        const { recipeIds } = this.props
-
+        const {authedUser} = this.props
         return (
             <div className='recipe'>
-                <button style={{margin: 'auto'}}><Link to="/add" className='center'>Add New Recipe</Link></button>
-                <ul className='dashboard'>
-                    {recipeIds.map(id => (
-                        <li key={id}>
-                            <RecipeThumb id={id} />
-                        </li>
-                    ))}
-                </ul>
+                {authedUser && <button style={{margin: '1rem auto'}}><Link to="/add" className='center'>Add New Recipe</Link></button>}
+                <RecipeList recipeIds = {this.props.recipeIds}/>
             </div>
         )
     }
 }
 
-function mapStateToProps( { recipes } ){
+function mapStateToProps( { authedUser, recipes } ){
     return { 
+        authedUser,
         recipeIds: Object.keys(recipes)
-        .sort((a,b) => recipes[b].timestamp - recipes[a].timestamp)
+        .sort((a,b) => parseInt(recipes[b].timestamp, 10) - parseInt(recipes[a].timestamp), 10)
     }
   }
 

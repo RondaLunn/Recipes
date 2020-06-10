@@ -12,7 +12,7 @@ class Recipe extends Component {
 
     render() {
         const { authedUser, recipe, author, uid } = this.props
-        const user = authedUser.uid
+        const user = authedUser ? authedUser.uid : null
 
         if (recipe === null) {
             return <p className='center'>Error 404: This recipe does not exist</p>

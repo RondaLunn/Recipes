@@ -1,40 +1,8 @@
 import axios from 'axios'
 
-let user = {}
+let users = {}
 
-let recipes = {
-  hgfeiuhgbg1: {
-    id: 'hgfeiuhgbg1',
-    timestamp: Date.now(),
-    author: 'Ronda',
-    uid: 'qgw2sACRQ9MIYT4Fpwm4K2lWgDn2',
-    recipeText: {
-      title: 'Test Recipe',
-      category: 'dessert',
-      prepTime: '10 min',
-      cookTime: '20 min',
-      servings: '4',
-      ingredients: ['milk', 'flour', 'eggs', 'sugar'],
-      instructions: ['mix ingredients', 'cook for 10 minutes', 'eat'],
-      notes: "Don't overmix",
-      tags: [],
-      images: [
-        {
-          url: 'https://www.rondalunn.com/static/hearttree-86b5108f76f0f5d0b0ef724d64979c46.jpg',
-          caption: 'My first recipe image',
-        },
-        {
-          url: 'https://www.rondalunn.com/static/AI-character-9b7667968b1959189708583cce762208.jpg',
-          caption: 'My second recipe image',
-        },
-        {
-          url: 'https://www.rondalunn.com/static/imagine-yourself-0a4b761c9a43fe1d9544dfb7d86c1906.jpg',
-          caption: 'My third recipe image',
-        },
-      ],
-    },
-  }
-}
+let recipes = {}
 
 function generateID () {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
@@ -46,56 +14,20 @@ export function _getUser (uid) {
   .then(response => response.data)
   .then(data => {
     Array.isArray(data) && data.forEach(userInfo => {
-      const { uid, name, recipes, favorites }  = userInfo
-      let recipeList = JSON.parse(recipes)
-      let favoritesList = JSON.parse(favorites)
-      user = {
+      const { uid, name, email, recipes, favorites, cookbooks, activity }  = userInfo
+      users = {
         uid: uid, 
         name, 
-        recipes: recipeList, 
-        favorites: favoritesList
+        email,
+        recipes: JSON.parse(recipes), 
+        favorites: JSON.parse(favorites),
+        cookbooks: JSON.parse(cookbooks),
+        activity: JSON.parse(activity)
       }
     })
   })
   return new Promise((res, rej) => {
-    setTimeout(() => res({...user}), 1000)
-  })
-}
-
-
-export function _getRecipes () {
-  const url = '/api/recipes.php'
-  axios.get(url).then(response => response.data)
-  .then(data => {
-    Array.isArray(data) && data.forEach(recipe => {
-      const { timestamp, author, uid, title, category, servings, ingredients, instructions, notes, tags, images} = recipe
-      let id = recipe.recipe_id
-      let prepTime = recipe.prep_time
-      let cookTime = recipe.cook_time
-      let ingredientList = JSON.parse(ingredients)
-      let instructionList = JSON.parse(instructions)
-      let tagList = JSON.parse(tags)
-      let imageList = JSON.parse(images)
-      let recipeText = {
-        title, 
-        category, 
-        prepTime, 
-        cookTime, 
-        servings, 
-        ingredients: ingredientList, 
-        instructions: instructionList, 
-        notes,
-        tags: tagList, 
-        images: imageList
-      }
-      recipes = {
-        ...recipes,
-        [id]: {id, timestamp, author, uid, recipeText}
-      }
-    })
-  })
-  return new Promise((res, rej) => {
-    setTimeout(() => res({...recipes}), 1000)
+    setTimeout(() => res({...users}), 1000)
   })
 }
 
@@ -103,14 +35,20 @@ export function _saveUser (newUser) {
   return new Promise((res, rej) => {
     const uid = newUser.uid
     const name = newUser.name
+    const email = newUser.email
     const recipes = newUser.recipes
     const favorites = newUser.favorites
+    const cookbooks = newUser.cookbooks
+    const activity = newUser.activity
 
     let formData = new FormData()
     formData.append('uid', uid)
     formData.append('name', name)
+    formData.append('email', email)
     formData.append('recipes', JSON.stringify(recipes))
     formData.append('favorites', JSON.stringify(favorites))
+    formData.append('cookbooks', JSON.stringify(cookbooks))
+    formData.append('activity', JSON.stringify(activity))
     axios({
       method: 'post',
       url: '/api/users.php',
@@ -119,13 +57,16 @@ export function _saveUser (newUser) {
     })
     .then(() => {
       setTimeout(() => {
-      user = {
+      users = {
         uid, 
         name, 
+        email,
         recipes,
-        favorites
+        favorites,
+        cookbooks, 
+        activity
       }
-      res(user)
+      res(users)
     }, 1000)
     })
   })
@@ -133,12 +74,15 @@ export function _saveUser (newUser) {
 
 export function _updateUser (user) {
   return new Promise((res, rej) => {
-    const { uid, name, recipes, favorites } = user
+    const { uid, name, email, recipes, favorites, cookbooks, activity } = user
     let formData = new FormData()
     formData.append('uid', uid)
     formData.append('name', name)
+    formData.append('email', email)
     formData.append('recipes', JSON.stringify(recipes))
     formData.append('favorites', JSON.stringify(favorites))
+    formData.append('cookbooks', JSON.stringify(cookbooks))
+    formData.append('activity', JSON.stringify(activity))
     formData.append('update', 1)
     axios({
       method: 'post',
@@ -148,13 +92,16 @@ export function _updateUser (user) {
     })
     .then(() => {
       setTimeout(() => {
-        user = {
+        users = {
           uid, 
           name, 
+          email,
           recipes,
-          favorites
+          favorites,
+          cookbooks,
+          activity
         }
-        res(user)
+        res(users)
       }, 1000)
     })
   })
@@ -168,6 +115,50 @@ function formatRecipe (recipeText, author, uid, recipeID=generateID()) {
     uid,
     recipeText: recipeText,
   }
+}
+
+export function _getRecipes () {
+  const url = '/api/recipes.php'
+  axios.get(url).then(response => response.data)
+  .then(data => {
+    Array.isArray(data) && data.forEach(recipe => {
+      const { timestamp, author, uid, title, category, servings, ingredients, instructions, notes, tags, images, cookbooks, favorites, ratings, comments} = recipe
+      let id = recipe.recipe_id
+      let prepTime = recipe.prep_time
+      let cookTime = recipe.cook_time
+      let ingredientList = JSON.parse(ingredients)
+      let instructionList = JSON.parse(instructions)
+      let tagList = JSON.parse(tags)
+      let imageList = JSON.parse(images)
+      let cookbookList = JSON.parse(cookbooks)
+      let favoriteList = JSON.parse(favorites)
+      let ratingList = JSON.parse(ratings)
+      let commentList = JSON.parse(comments)
+      let recipeText = {
+        title, 
+        category, 
+        prepTime, 
+        cookTime, 
+        servings, 
+        ingredients: ingredientList, 
+        instructions: instructionList, 
+        notes,
+        tags: tagList, 
+        images: imageList,
+        cookbooks: cookbookList,
+        favorites: favoriteList,
+        ratings: ratingList,
+        comments: commentList
+      }
+      recipes = {
+        ...recipes,
+        [id]: {id, timestamp, author, uid, recipeText}
+      }
+    })
+  })
+  return new Promise((res, rej) => {
+    setTimeout(() => res({...recipes}), 1000)
+  })
 }
 
 export function _saveRecipe (recipeInfo) {
@@ -190,6 +181,10 @@ export function _saveRecipe (recipeInfo) {
     formData.append('notes', recipeText.notes)
     formData.append('tags', JSON.stringify(recipeText.tags))
     formData.append('images', JSON.stringify(recipeText.images))
+    formData.append('cookbooks', JSON.stringify(recipeText.cookbooks))
+    formData.append('favorites', JSON.stringify(recipeText.favorites))
+    formData.append('ratings', JSON.stringify(recipeText.ratings))
+    formData.append('comments', JSON.stringify(recipeText.comments))
     axios({
       method: 'post',
       url: '/api/recipes.php',
@@ -229,6 +224,10 @@ export function _updateRecipe (recipeInfo) {
     formData.append('notes', recipeText.notes)
     formData.append('tags', JSON.stringify(recipeText.tags))
     formData.append('images', JSON.stringify(recipeText.images))
+    formData.append('cookbooks', JSON.stringify(recipeText.cookbooks))
+    formData.append('favorites', JSON.stringify(recipeText.favorites))
+    formData.append('ratings', JSON.stringify(recipeText.ratings))
+    formData.append('comments', JSON.stringify(recipeText.comments))
     formData.append('update', 1)
     axios({
       method: 'post',
@@ -251,17 +250,14 @@ export function _updateRecipe (recipeInfo) {
 export function _deleteRecipe (recipeID) {
   return new Promise((res, rej) => {
     const url = `/api/recipes.php`
-    const userRecipes = user.recipes.fiter(recipe => recipe.id !== recipeID)
+
     axios.delete(url, {params: {id: recipeID}})
-      .then(() => {
-        setTimeout(() => {
-          delete recipes[recipeID]
-          user = {
-            ...user,
-            recipes: userRecipes
-          }
-          res(recipeID)
-        }, 1000)
+    .then(() => {
+      setTimeout(() => {
+        delete recipes[recipeID]
+
+        res(recipeID)
+      }, 1000)
     })
   })
 }

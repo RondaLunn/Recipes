@@ -32,7 +32,8 @@ class Navigation extends Component {
             <nav className='nav'>
                 <ul className='nav-list'>
                     <li className='nav-link'><Link to='/'>Home</Link></li>
-                    <li className='nav-link'><Link to='/add'>New Recipe</Link></li>
+                    {authedUser && <li className='nav-link'><Link to='/add'>New Recipe</Link></li>}
+                    {authedUser && <li className='nav-link'><Link to='/profile'>Profile</Link></li>}
                 </ul>
                 {authedUser &&(
                 <div className="authedUser-info">

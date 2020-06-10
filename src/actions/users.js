@@ -40,6 +40,19 @@ export function handleUserRecipe (id) {
     }
 }
 
+export function handleRemoveUserRecipe (id) {
+    return (dispatch, getState) => {
+        const { users } = getState()
+        const userRecipes = users.recipes.filter(recipe => recipe !== id)
+        updateUser({
+            ...users,
+            recipes: userRecipes
+          }).then(updatedUser => {
+            dispatch(addUserUpdate(updatedUser))
+          })
+    }
+}
+
 export function handleNewUser (user) {
     return (dispatch) => {
         dispatch(showLoading())
