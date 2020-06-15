@@ -16,6 +16,7 @@ import Login from './Login'
 import Home from './Home'
 import NewRecipe from './NewRecipe'
 import RecipePage from './RecipePage'
+import Author from './Author'
 import NotFound from './NotFound'
 
 import '../App.css'
@@ -76,6 +77,9 @@ class App extends Component {
                   )} />
 
                 <Route path='/recipes/:recipe_id' component={RecipePage}/>
+
+                <Route path='/author/:author' component={Author}/>
+                
                 <Route component={NotFound} />
               </Switch>
             </Fragment>}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
@@ -83,7 +83,7 @@ class Recipe extends Component {
             <div className="recipe">
                 <div className='recipe-title'><h2 className='center'>{recipeText.title}</h2>
                 {favorite ? <FavoriteIcon onClick={this.handleRemoveFavorite} /> : <FavoriteBorderIcon onClick={this.handleFavorite}/>}</div>
-                <p className='center'>Added by {author}</p>
+                <p className='center'>Added by <Link to={`/author/${author.replace(/[\W_]+/g, '_')}`}>{author}</Link></p>
                 {user === uid && <AdminPanel id={this.props.id}/>}
                 
                 <div className='recipe-info'>
