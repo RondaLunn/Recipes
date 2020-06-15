@@ -7,11 +7,11 @@ import axios from 'axios'
 import "firebase/auth"
 
 import { handleInitialData } from '../actions/shared'
+import { handleRemoveUserRecipe, handleRemoveUserFavorite } from '../actions/users'
 
 import LoadingBar from 'react-redux-loading-bar'
 
 import Header from './Header'
-import Navigation from './Navigation'
 import Login from './Login'
 import Home from './Home'
 import NewRecipe from './NewRecipe'
@@ -31,6 +31,21 @@ class App extends Component {
 
       const { dispatch } = this.props
       dispatch(handleInitialData())
+      .then(() => {
+        setTimeout(() => {
+          this.props.authedUser.recipes.map(recipe => {
+            if (this.props.recipes[recipe] === undefined){
+              dispatch(handleRemoveUserRecipe(recipe))
+            }
+          })
+          this.props.authedUser.favorites.map(recipe => {
+            if (this.props.recipes[recipe] === undefined){
+              dispatch(handleRemoveUserFavorite(recipe))
+            }
+          })
+        }, 1000)
+        
+      })
     })
   }
 
@@ -38,32 +53,33 @@ class App extends Component {
     return (
       <BrowserRouter >
         <Fragment>
-          <LoadingBar style={{ backgroundColor: 'blue', height: '5px' }} />
+          <LoadingBar style={{ backgroundColor: 'blue', height: '5px', zIndex: 12, position: 'absolute', top: 0}} />
 
           <Header />
 
-          <Navigation />          
+          <div className="container">
 
-          {!this.props.loggedin && <Login />}
+            <Login />
 
-          {!this.props.loading && <Fragment>
-              <Switch>
-                <Route exact path='/' render ={() => (
-                    <Home />
-                    )} />
+            {!this.props.loading && <Fragment>
+                <Switch>
+                  <Route exact path='/' render ={() => (
+                      <Home />
+                      )} />
 
-                <Route path='/add' render ={() => (
-                  <NewRecipe />
-                )} /> 
+                  <Route path='/add' render ={() => (
+                    <NewRecipe />
+                  )} /> 
 
-                <Route path='/profile' render ={() => (
-                  <Profile />
-                )} />
+                  <Route path='/profile' render ={() => (
+                    <Profile />
+                  )} />
 
-              <Route path='/recipes/:recipe_id' component={RecipePage}/>
-              <Route component={NotFound} />
-            </Switch>
-          </Fragment>}
+                <Route path='/recipes/:recipe_id' component={RecipePage}/>
+                <Route component={NotFound} />
+              </Switch>
+            </Fragment>}
+          </div>
         </Fragment>
       </BrowserRouter>
     )
@@ -73,7 +89,9 @@ class App extends Component {
 function mapStateToProps ({ authedUser, recipes }) {
   return {
     loading: Object.keys(recipes).length === 0,
-    loggedin: authedUser !== null
+    loggedin: authedUser !== null,
+    authedUser,
+    recipes
   }
 }
 

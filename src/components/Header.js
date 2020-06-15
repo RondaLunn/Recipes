@@ -1,10 +1,20 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+
+import Navigation from './Navigation'
 
 const Header = () => {
     return (
         <div className='header'>
-            <img src={require('../logo192.png')} alt='Recipes logo' className='recipe-logo'/>
-            <h1 className='header-title'>Recipes</h1>
+            <Link to='/'>
+                <div className='header-title'>
+                    <img src={require('../logo192.png')} alt='Recipes logo' className='recipe-logo'/>
+                    <h1>Recipes</h1>
+                </div>
+            </Link>
+            
+            <Navigation />  
+
         </div>
     )
 }

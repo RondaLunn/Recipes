@@ -182,7 +182,8 @@ class NewRecipe extends Component {
         e.preventDefault()
         if (this.checkComplete()) {
             const { title, category, prepTime, cookTime, servings, ingredients, instructions, notes, tags, images, cookbooks, favorites, ratings, comments } = this.state
-            const { dispatch, recipeID } = this.props
+            
+            const { dispatch } = this.props
 
             const recipeText = {
                 title,
@@ -202,11 +203,19 @@ class NewRecipe extends Component {
             }
 
             if (this.state.edit) {
-                dispatch(handleUpdateRecipe(recipeText, recipeID))
+                const { author, uid, id, timestamp } = this.props.recipeInfo
+                dispatch(handleUpdateRecipe({
+                    recipeText,
+                    author,
+                    uid,
+                    id,
+                    timestamp 
+                }))
                 this.props.closeModal()
             } else {
                 dispatch(handleAddRecipe(recipeText))
-                this.setState(() => ({
+                .then(() => {
+                    this.setState(() => ({
                     title: '',
                     category: 'category',
                     prepTime: '',
@@ -222,7 +231,7 @@ class NewRecipe extends Component {
                     ratings: [],
                     comments: []
                 }))
-                this.props.history.push({pathname: '/', toTop: true}) 
+                    this.props.history.push({pathname: '/', toTop: true})})
             }
         }     
     }
@@ -231,7 +240,7 @@ class NewRecipe extends Component {
         window.scrollTo(0,0)
         
         if(this.props.recipeInfo) {
-            const { title, category, prepTime, cookTime, servings, ingredients, instructions, notes, tags, images, cookbooks, favorites, ratings, comments } = this.props.recipeInfo
+            const { title, category, prepTime, cookTime, servings, ingredients, instructions, notes, tags, images, cookbooks, favorites, ratings, comments } = this.props.recipeInfo.recipeText
             this.setState(() => ({
                 header: 'Edit Recipe',
                 edit: true,

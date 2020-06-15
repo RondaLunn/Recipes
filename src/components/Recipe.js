@@ -2,17 +2,75 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
+
 import ImageSlider from './ImageSlider'
 import AdminPanel from './AdminPanel'
 
+import { handleUserFavorite, handleRemoveUserFavorite } from '../actions/users'
+import { handleUpdateRecipe } from '../actions/recipes'
+
 class Recipe extends Component {
+    state = {
+        favorite: false
+    }
+
+    handleFavorite = () => {
+        const { dispatch, id, recipe, authedUser } = this.props
+        this.setState({favorite: true})
+        const favoritesList = recipe.recipeText.favorites.concat(authedUser.uid)
+        const recipeText = recipe.recipeText
+        const updatedRecipe = {
+            ...recipe,
+            recipeText: {
+                ...recipeText,
+                favorites: favoritesList
+            }
+        }
+        dispatch(handleUpdateRecipe(updatedRecipe))
+        .then(() => {
+            dispatch(handleUserFavorite(id))
+        }) 
+        .catch(() => {
+            this.setState({favorite: false})
+        })
+    }
+
+    handleRemoveFavorite = () => {
+        const { dispatch, id, recipe, authedUser } = this.props
+        this.setState({favorite: false})
+        const favoritesList = recipe.recipeText.favorites.filter(favorite => favorite !== authedUser.uid)
+        const recipeText = recipe.recipeText
+        const updatedRecipe = {
+            ...recipe,
+            recipeText: {
+                ...recipeText,
+                favorites: favoritesList
+            }
+        }
+        dispatch(handleUpdateRecipe(updatedRecipe))
+        .then(() => {
+            dispatch(handleRemoveUserFavorite(id))
+        })
+        .catch(() => {
+            this.setState({favorite: true})
+        })
+    }
+
     componentDidMount() {
         window.scrollTo(0,0)
+        const { recipe, authedUser } = this.props
+        if (recipe){
+            const favorite = recipe.recipeText.favorites.includes(authedUser.uid)
+            this.setState({favorite})
+        }
     }
 
     render() {
         const { authedUser, recipe, author, uid } = this.props
         const user = authedUser ? authedUser.uid : null
+        const favorite = this.state.favorite
 
         if (recipe === null) {
             return <p className='center'>Error 404: This recipe does not exist</p>
@@ -23,7 +81,8 @@ class Recipe extends Component {
 
         return (
             <div className="recipe">
-                <h2 className='center'>{recipeText.title}</h2>
+                <div className='recipe-title'><h2 className='center'>{recipeText.title}</h2>
+                {favorite ? <FavoriteIcon onClick={this.handleRemoveFavorite} /> : <FavoriteBorderIcon onClick={this.handleFavorite}/>}</div>
                 <p className='center'>Added by {author}</p>
                 {user === uid && <AdminPanel id={this.props.id}/>}
                 
@@ -67,7 +126,7 @@ function mapStateToProps ({authedUser, recipes}, {id}) {
         authedUser,
         recipe: recipe,
         author: author,
-        uid: uid
+        uid: uid,
     }
 
 }

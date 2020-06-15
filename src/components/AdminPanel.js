@@ -23,14 +23,14 @@ class AdminPanel extends Component {
     editRecipe = () => {
         const { recipe } = this.props
         this.setState({
-        modal: <NewRecipe recipeInfo={recipe.recipeText} recipeID={recipe.id} closeModal={this.cancelEdit}/>
+        modal: <NewRecipe recipeInfo={recipe} closeModal={this.cancelEdit}/>
         })
     }
 
     cancelEdit = () => {
         this.setState({
             modal: null
-            })
+        })
     }
      
     render() {

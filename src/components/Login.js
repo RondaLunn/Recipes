@@ -5,6 +5,7 @@ import "firebase/auth"
 
 import { handleNewUser } from '../actions/users'
 import { handleInitialData } from '../actions/shared'
+import { setAuthedUser } from '../actions/authedUser'
 
 class Login extends Component {
     state = {
@@ -114,6 +115,20 @@ class Login extends Component {
         })
     }
 
+    handleLogOut = (e) => {
+      e.preventDefault()
+      let message = ''
+      firebase.auth().signOut()
+      .then(() => {
+          message = "Successfully logged out."
+          const { dispatch } = this.props
+          dispatch(setAuthedUser(null))
+      }).catch((error) => {
+          message =`Error Logging out. Please try again. Error: ${error}`
+      })
+      this.setState({message: message})
+  }
+
     sendEmailVerification = () => {
         firebase.auth().currentUser.sendEmailVerification()
         .then(() => {
@@ -151,12 +166,19 @@ class Login extends Component {
       }
     
     render() {
+      const { authedUser } = this.props
         return (
-            <div className="recipe-login">
+          <Fragment>
+            {authedUser
+             ? <div className="authedUser-info">
+                <p>Logged in as {authedUser.name} </p>
+                <button className='logout-btn' onClick={this.handleLogOut}>Log out</button>
+            </div>
+            : <div className="recipe-login">
                 <h3 className='center'>{this.state.type === 'login' ? 'Log in' : 'Register'}</h3>
                 <button onClick={this.toggleLogin}>{this.state.type === 'login' ? 'New to Recipes? Click here to Register.' : 'Already have an account? Click here to Log In'}</button>
                 <div className="recipe-info">{this.state.message}</div>
-                <div className="recipe-form">
+                <div className="recipe-login-form">
                 <label htmlFor="email">Email:</label>
                 <input
                     type="email"
@@ -196,8 +218,16 @@ class Login extends Component {
                 <button onClick={this.sendPasswordReset}><p>Forgot Password?</p></button>
                 </div>
             </div>
+          }
+          </Fragment>
         )
     }
 }
 
-export default connect()(Login)
+function mapStateToProps({ authedUser }) {
+  return {
+      authedUser
+  }
+}
+
+export default connect(mapStateToProps)(Login)

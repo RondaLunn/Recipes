@@ -10,7 +10,7 @@ class RecipeList extends Component {
     state = {
         recipeList: this.props.recipeIds,
         category: 'all', 
-        sort: 'recent',
+        sort: 'none',
         favorites: false
     }
 
@@ -80,13 +80,13 @@ class RecipeList extends Component {
     }
 
     render () {
-        const { users } = this.props
+        const { authedUser } = this.props
         const { sort, favorites } = this.state
         const recipeList = favorites 
-        ? this.state.recipeList.filter(recipe => users.favorites.includes(recipe))
+        ? this.state.recipeList.filter(recipe => authedUser.favorites.includes(recipe))
         : this.state.recipeList
         return (
-            <div className='recipe'>
+            <div className='dashboard'>
                 <div className="filter-list">
                     Filter by: 
                     <button style={favorites ? {color: 'blue'} : {}} onClick={this.handleToggleFavorites}>Favorites</button>
@@ -118,11 +118,10 @@ class RecipeList extends Component {
     }
 }
 
-function mapStateToProps( { recipes, authedUser, users } ){
+function mapStateToProps( { recipes, authedUser } ){
     return { 
         authedUser,
         recipes,
-        users,
     }
   }
 

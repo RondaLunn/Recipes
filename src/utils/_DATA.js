@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-let users = {}
+let user = {}
 
 let recipes = {}
 
@@ -15,7 +15,7 @@ export function _getUser (uid) {
   .then(data => {
     Array.isArray(data) && data.forEach(userInfo => {
       const { uid, name, email, recipes, favorites, cookbooks, activity }  = userInfo
-      users = {
+      user = {
         uid: uid, 
         name, 
         email,
@@ -27,7 +27,7 @@ export function _getUser (uid) {
     })
   })
   return new Promise((res, rej) => {
-    setTimeout(() => res({...users}), 1000)
+    setTimeout(() => res({...user}), 1000)
   })
 }
 
@@ -57,7 +57,7 @@ export function _saveUser (newUser) {
     })
     .then(() => {
       setTimeout(() => {
-      users = {
+      user = {
         uid, 
         name, 
         email,
@@ -66,15 +66,15 @@ export function _saveUser (newUser) {
         cookbooks, 
         activity
       }
-      res(users)
+      res(user)
     }, 1000)
     })
   })
 }
 
-export function _updateUser (user) {
+export function _updateUser (userInfo) {
   return new Promise((res, rej) => {
-    const { uid, name, email, recipes, favorites, cookbooks, activity } = user
+    const { uid, name, email, recipes, favorites, cookbooks, activity } = userInfo
     let formData = new FormData()
     formData.append('uid', uid)
     formData.append('name', name)
@@ -92,7 +92,7 @@ export function _updateUser (user) {
     })
     .then(() => {
       setTimeout(() => {
-        users = {
+        user = {
           uid, 
           name, 
           email,
@@ -101,19 +101,19 @@ export function _updateUser (user) {
           cookbooks,
           activity
         }
-        res(users)
+        res(user)
       }, 1000)
     })
   })
 }
 
-function formatRecipe (recipeText, author, uid, recipeID=generateID()) {
+function formatRecipe (recipeText, author, uid) {
   return {
-    id: recipeID,
+    id: generateID(),
     timestamp: Date.now(),
     author,
     uid,
-    recipeText: recipeText,
+    recipeText,
   }
 }
 
@@ -206,12 +206,11 @@ export function _saveRecipe (recipeInfo) {
 
 export function _updateRecipe (recipeInfo) {
   return new Promise((res, rej) => {
-    const  { recipeText, author, uid, recipeID } = recipeInfo
-    const formattedRecipe = formatRecipe(recipeText, author, uid, recipeID)
+    const  { recipeText, author, uid, id, timestamp } = recipeInfo
 
     let formData = new FormData()
-    formData.append('recipe_id', recipeID)
-    formData.append('timestamp', formattedRecipe.timestamp)
+    formData.append('recipe_id', id)
+    formData.append('timestamp', timestamp)
     formData.append('author', author)
     formData.append('uid', uid)
     formData.append('title', recipeText.title)
@@ -239,9 +238,9 @@ export function _updateRecipe (recipeInfo) {
       setTimeout(() => {
       recipes = {
         ...recipes,
-        [recipeID]: formattedRecipe
+        [id]: recipeInfo
       }
-      res(formattedRecipe)
+      res(recipeInfo)
     }, 1000)
     })
   })

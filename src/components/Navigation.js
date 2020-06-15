@@ -1,50 +1,43 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { setAuthedUser } from '../actions/authedUser'
-import * as firebase from "firebase/app"
-import "firebase/auth"
+
+import MenuIcon from '@material-ui/icons/Menu'
+import CloseIcon from '@material-ui/icons/Close'
 
 class Navigation extends Component {
     state = {
-        message: ''
+        message: '',
+        menuOpen: false
     }
 
-    handleLogOut = (e) => {
-        e.preventDefault()
-        let message = ''
-        firebase.auth().signOut()
-        .then(() => {
-            message = "Successfully logged out."
-            const { dispatch } = this.props
-            dispatch(setAuthedUser(null))
-        }).catch((error) => {
-            message =`Error Logging out. Please try again. Error: ${error}`
-        })
-        this.setState({message: message})
+    toggleMenu = () => {
+        const menuOpen = this.state.menuOpen ? false : true
+        this.setState({menuOpen})
+    }
+
+    closeMenu = () => {
+        setTimeout(() => {this.setState({menuOpen: false})}, 100)
     }
 
     render(){
-    let { authedUser } = this.props
+        const { authedUser } = this.props
+        const { menuOpen } = this.state
 
-    return (
-        <Fragment>
-            <nav className='nav'>
-                <ul className='nav-list'>
-                    <li className='nav-link'><Link to='/'>Home</Link></li>
-                    {authedUser && <li className='nav-link'><Link to='/add'>New Recipe</Link></li>}
-                    {authedUser && <li className='nav-link'><Link to='/profile'>Profile</Link></li>}
-                </ul>
-                {authedUser &&(
-                <div className="authedUser-info">
-                    <p>Logged in as {authedUser.name} </p>
-                    <button className='logout-btn' onClick={this.handleLogOut}>Log out</button>
-                </div>
-                )}
-            </nav>
-            {this.state.message !== '' && <p>{this.state.message}</p>}
-        </Fragment>
-    )
+        return (
+            <Fragment>
+                <nav className='nav' onBlur={this.closeMenu}>
+                    <button className='menu-btn' onClick={this.toggleMenu}>{menuOpen ? <CloseIcon style={{fontSize: 40, margin: '1rem'}}/>: <MenuIcon style={{fontSize: 40, margin: '1rem'}}/>}</button>
+                    {menuOpen 
+                    && <ul className='nav-list'>
+                        <Link to='/'><li className='nav-link'>Home</li></Link>
+                        {authedUser && <Link to='/add'><li className='nav-link'>New Recipe</li></Link>}
+                        {authedUser && <Link to='/profile'><li className='nav-link'>Profile</li></Link>}
+                    </ul>}
+                </nav>
+                {this.state.message !== '' && <p>{this.state.message}</p>}
+            </Fragment>
+        )
     }
 }
 

@@ -49,16 +49,10 @@ export function handleAddRecipe (recipeText) {
     }
 }
 
-export function handleUpdateRecipe (recipeText, recipeID) {
-    return (dispatch, getState) => {
-        const { authedUser } = getState()
+export function handleUpdateRecipe (recipeInfo) {
+    return (dispatch) => {
         dispatch(showLoading())
-        return updateRecipe({
-            recipeText,
-            author: authedUser.name,
-            uid: authedUser.uid,
-            recipeID 
-        })
+        return updateRecipe(recipeInfo)
         .then(recipe => {
             dispatch(addRecipe(recipe))
         })

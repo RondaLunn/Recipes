@@ -28,42 +28,42 @@ class Profile extends Component {
     }
 
     render () {
-        const { authedUser, user } = this.props
-        const userRecipes = user.recipes
-        const userFavorites = user.favorites
+        const { authedUser, recipes } = this.props
+        const userRecipes = authedUser.recipes ? authedUser.recipes.filter(recipe => recipes[recipe] !== undefined) : []
+        const userFavorites = authedUser.favorites ? authedUser.favorites.filter(favorite => recipes[favorite] !== undefined) : []
         return (
             <div className='recipe'>
-                {Object.keys(user).length > 0  
+                {Object.keys(authedUser).length > 0  
                 ? <div className="user">
                     <h2>Profile</h2>
                     <div className="user-info">
-                        <p>{user.name}</p>
-                        <p>{user.email}</p>
+                        <p>{authedUser.name}</p>
+                        <p>{authedUser.email}</p>
                     </div>
                     <div className='dashboard'>
-                        <div className='list-toggle'>
+                        <div className='list-toggle' onClick={this.toggleRecipes}>
                             <h3 className="center">My Recipes</h3>
-                            <button onClick={this.toggleRecipes}>{this.state.recipes ? <ExpandLess /> : <ExpandMore />}</button>
+                            {this.state.recipes ? <ExpandLess /> : <ExpandMore />}
                         </div>
                         {authedUser && <button style={{margin: '1rem auto'}}><Link to="/add" className='center'>Add New Recipe</Link></button>}
                         
                         {this.state.recipes &&
                         <Fragment>
                         {userRecipes.length > 0
-                        ? <RecipeList recipeIds={userRecipes} />
+                        ? <RecipeList recipeIds={userRecipes.sort((a,b) => recipes[b].timestamp - recipes[a].timestamp)} />
                         : <p className="center">You have not created any recipes yet.</p>}
                         </Fragment>}
                     </div>
 
                     <div className='dashboard'>
-                        <div className='list-toggle'>
+                        <div className='list-toggle' onClick={this.toggleFavorites}>
                             <h3 className="center">My Favorite Recipes</h3>
-                            <button onClick={this.toggleFavorites}>{this.state.favorites ? <ExpandLess /> : <ExpandMore />}</button>
+                            {this.state.favorites ? <ExpandLess /> : <ExpandMore />}
                         </div>
                         {this.state.favorites &&
                         <Fragment>
                         {userFavorites.length > 0
-                        ? <RecipeList recipeIds={userFavorites} favorites={true} />
+                        ? <RecipeList recipeIds={userFavorites.sort((a,b) => recipes[b].timestamp - recipes[a].timestamp)} favorites={true} />
                         : <p className="center">You have not added any recipes to your favorites.</p>}
                         </Fragment>}
                     </div>
@@ -77,12 +77,10 @@ class Profile extends Component {
     }
 }
 
-function mapStateToProps( { recipes, authedUser, users } ){
+function mapStateToProps( { recipes, authedUser } ){
     return { 
         authedUser,
-        user: users,
-        recipeIds: Object.keys(recipes)
-        .sort((a,b) => recipes[b].timestamp - recipes[a].timestamp)
+        recipes
     }
   }
 
