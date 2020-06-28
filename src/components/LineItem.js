@@ -34,15 +34,15 @@ class LineItem extends Component {
             <div id={item} className='line-item' draggable="true" onDragStart={this.props.handleDrag}>
                 <div style={{display:this.state.inputDisplay}}>
                     <input defaultValue={item} onKeyPress={e => {this.keyPressed(e, field)}}/>
-                    <button onClick={e => this.changeItem(e, field)}>Update</button>
+                    <button title="Update line item" onClick={e => this.changeItem(e, field)}>Update</button>
                 </div>
                 
                 <div style={{display:this.state.itemDisplay}}>
                     <div style={{width: '10rem', padding: '0.5rem'}} onDragOver={this.props.allowDrop} onDrop={e => this.props.handleDrop(e, field)}>{item}</div>
-                    <button onClick={e => this.toggleInput(e)}>Edit</button>
+                    <button title="Edit line item" onClick={e => this.toggleInput(e)}>Edit</button>
                 </div>
                 
-                <button onClick={e => this.props.deleteLine(e, field)}>Delete</button>
+                <button title="Delete line item" onClick={e => this.props.deleteLine(e, field)}>Delete</button>
             </div>
         )
     }

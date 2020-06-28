@@ -6,7 +6,7 @@ import RecipeList from './RecipeList'
 const Author = (props) => {
     return (
         <div>
-            <h3>{`${props.author.replace(/_/g, " ")}'s Recipes`}</h3>
+            <h3 className='center'>{`${props.author.replace(/_/g, " ")}'s Recipes`}</h3>
             <RecipeList recipeIds={props.recipeIds ? props.recipeIds.filter(recipe => props.recipes[recipe].author.replace(/[\W_]+/g, '_') === props.author) : []} />
         </div>
     )

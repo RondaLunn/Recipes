@@ -36,6 +36,7 @@ button {
   border: none;
   font-size: 16px;
   background-color: whitesmoke;
+  cursor: pointer;
 }
 
 button:hover {
@@ -148,6 +149,10 @@ button:hover {
   box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.25);
 }
 
+.nav-bar {
+  display: none;
+}
+
 .nav-link {
   padding: 1rem;
   text-align: center;
@@ -175,7 +180,7 @@ button:hover {
 
 .recipe {
   width: 100%;
-  max-width: 900px;
+  max-width: 1120px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -247,6 +252,37 @@ button:hover {
   justify-content: center;
   align-items: center;
   margin: 0.5rem auto;
+}
+
+.search-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem auto;
+}
+
+.search-input {
+  margin: 0 0.25rem;
+  padding: 0.25rem;
+  font-size: 1rem;
+  width: 15rem;
+}
+
+.filter-select {
+  margin: 0 0.25rem;
+  padding: 0.25rem;
+  font-size: 1rem;
+  width: 8rem;
+}
+
+.recipe-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0;
 }
 
 .recipe-thumb {
@@ -386,6 +422,7 @@ button:hover {
 
 .line-item {
   display: flex;
+  cursor: grab;
 }
 
 .add-btn {
@@ -445,4 +482,27 @@ button:hover {
   align-items: center;
   justify-content: center;
   flex-direction: row;
+}
+
+@media screen and (min-width: 750px) {
+  .recipe-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+  }
+
+  .menu-btn {
+    display: none;
+  }
+
+  .nav-bar {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    margin: 1rem 3rem;
+  }
 }

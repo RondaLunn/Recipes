@@ -20,7 +20,7 @@ class Home extends Component {
         const {authedUser} = this.props
         return (
             <div className='recipe'>
-                {authedUser && <button style={{margin: '1rem auto'}}><Link to="/add" className='center'>Add New Recipe</Link></button>}
+                {authedUser && <button title="Add New Recipe" style={{margin: '1rem auto'}}><Link to="/add" className='center'>Add New Recipe</Link></button>}
                 <RecipeList recipeIds = {this.props.recipeIds}/>
             </div>
         )

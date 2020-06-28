@@ -35,16 +35,16 @@ class LineImage extends Component {
                 <div style={{display:this.state.inputDisplay, flexDirection:"column"}}>
                     <input defaultValue={imageURL} onKeyPress={e => {this.keyPressed(e)}} />
                     <input defaultValue={imageCaption} onKeyPress={e => {this.keyPressed(e)}} />
-                    <button onClick={e => this.changeItem(e)}>Update</button>
+                    <button title="Update line item" onClick={e => this.changeItem(e)}>Update</button>
                 </div>
                 
                 <div style={{display:this.state.itemDisplay}}>
                     <img src={imageURL} alt={imageCaption} className='recipe-image-thumb-input' draggable='false' onDragOver={this.props.allowDrop} onDrop={e => this.props.handleDrop(e, 'images')}/>
                     <div className='recipe-image-caption-input'>{imageCaption}</div>
-                    <button onClick={e => this.toggleInput(e)}>Edit</button>
+                    <button title="Edit line item" onClick={e => this.toggleInput(e)}>Edit</button>
                 </div>
                 
-                <button onClick={e => this.props.deleteLine(e)}>Delete</button>
+                <button title="Delete line item" onClick={e => this.props.deleteLine(e)}>Delete</button>
             </div>
         )
     }

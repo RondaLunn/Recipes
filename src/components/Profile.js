@@ -29,11 +29,11 @@ class Profile extends Component {
 
     render () {
         const { authedUser, recipes } = this.props
-        const userRecipes = authedUser.recipes ? authedUser.recipes.filter(recipe => recipes[recipe] !== undefined) : []
-        const userFavorites = authedUser.favorites ? authedUser.favorites.filter(favorite => recipes[favorite] !== undefined) : []
+        const userRecipes = authedUser && authedUser.recipes ? authedUser.recipes.filter(recipe => recipes[recipe] !== undefined) : []
+        const userFavorites = authedUser && authedUser.favorites ? authedUser.favorites.filter(favorite => recipes[favorite] !== undefined) : []
         return (
             <div className='recipe'>
-                {Object.keys(authedUser).length > 0  
+                {authedUser  
                 ? <div className="user">
                     <h2>Profile</h2>
                     <div className="user-info">

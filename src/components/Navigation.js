@@ -16,8 +16,12 @@ class Navigation extends Component {
         this.setState({menuOpen})
     }
 
-    closeMenu = () => {
-        setTimeout(() => {this.setState({menuOpen: false})}, 100)
+    closeMenu = (e) => {
+        if (e.relatedTarget && e.relatedTarget.parentNode.className === 'nav-list') {
+            return
+        } else {
+            setTimeout(() => {this.setState({menuOpen: false})}, 100)
+        }
     }
 
     render(){
@@ -27,13 +31,18 @@ class Navigation extends Component {
         return (
             <Fragment>
                 <nav className='nav' onBlur={this.closeMenu}>
-                    <button className='menu-btn' onClick={this.toggleMenu}>{menuOpen ? <CloseIcon style={{fontSize: 40, margin: '1rem'}}/>: <MenuIcon style={{fontSize: 40, margin: '1rem'}}/>}</button>
+                    <button title='Menu' aria-label='Menu' className='menu-btn' onClick={this.toggleMenu}>{menuOpen ? <CloseIcon style={{fontSize: 40, margin: '1rem'}}/>: <MenuIcon style={{fontSize: 40, margin: '1rem'}}/>}</button>
                     {menuOpen 
-                    && <ul className='nav-list'>
+                    && <ul className='nav-list' onClick={this.closeMenu}>
                         <Link to='/'><li className='nav-link'>Home</li></Link>
                         {authedUser && <Link to='/add'><li className='nav-link'>New Recipe</li></Link>}
                         {authedUser && <Link to='/profile'><li className='nav-link'>Profile</li></Link>}
                     </ul>}
+                    <ul className='nav-bar'>
+                        <Link to='/'><li className='nav-link'>Home</li></Link>
+                        {authedUser && <Link to='/add'><li className='nav-link'>New Recipe</li></Link>}
+                        {authedUser && <Link to='/profile'><li className='nav-link'>Profile</li></Link>}
+                    </ul>
                 </nav>
                 {this.state.message !== '' && <p>{this.state.message}</p>}
             </Fragment>

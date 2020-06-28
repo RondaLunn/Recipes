@@ -24,35 +24,33 @@ import Profile from './Profile'
 
 class App extends Component {
   componentDidMount() {      
+    const { dispatch, authedUser, recipes } = this.props
     const url = '/api/config.php'
     axios.get(url).then(response => response.data).then(data => {
       const firebaseConfig = data
       
       firebase.initializeApp(firebaseConfig)
-
-      const { dispatch } = this.props
       dispatch(handleInitialData())
-      .then(() => {
-        setTimeout(() => {
-          this.props.authedUser.recipes.map(recipe => {
-            if (this.props.recipes[recipe] === undefined){
-              dispatch(handleRemoveUserRecipe(recipe))
-            }
-          })
-          this.props.authedUser.favorites.map(recipe => {
-            if (this.props.recipes[recipe] === undefined){
-              dispatch(handleRemoveUserFavorite(recipe))
-            }
-          })
-        }, 1000)
-        
-      })
-    })
+            // .then(() => {
+            //   setTimeout(() => {
+            //     authedUser && authedUser.recipes.map(recipe => {
+            //       if (recipes[recipe] === undefined){
+            //         dispatch(handleRemoveUserRecipe(recipe))
+            //       }
+            //     })
+            //     authedUser && authedUser.favorites.map(recipe => {
+            //       if (recipes[recipe] === undefined){
+            //         dispatch(handleRemoveUserFavorite(recipe))
+            //       }
+            //     })
+            //   }, 1000)
+            // })
+})
   }
 
   render() {
     return (
-      <BrowserRouter >
+      <BrowserRouter>
         <Fragment>
           <LoadingBar style={{ backgroundColor: 'blue', height: '5px', zIndex: 12, position: 'absolute', top: 0}} />
 

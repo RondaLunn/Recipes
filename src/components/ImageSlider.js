@@ -104,12 +104,12 @@ class ImageSlider extends Component {
             <Fragment>
                 {imageList.length > 0 &&
                 <div className='image-container'>
-                    {imageList.length > 1 &&<button onClick={this.goLeft}><ChevronLeftIcon/></button>}
+                    {imageList.length > 1 &&<button title="Go left" onClick={this.goLeft}><ChevronLeftIcon/></button>}
                     <div onMouseDown={this.onDragStartMouse} onTouchStart={this.onDragStartTouch}>
                         <img src={image.url} alt={image.caption} className='recipe-image' draggable='false'/>
                         <p className='center'>{image.caption}</p>
                     </div>
-                    {imageList.length >1 && <button onClick={this.goRight}><ChevronRightIcon/></button>}
+                    {imageList.length >1 && <button title="Go Right" onClick={this.goRight}><ChevronRightIcon/></button>}
                 </div>
                 }
             </Fragment>

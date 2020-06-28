@@ -38,13 +38,13 @@ class AdminPanel extends Component {
             <div>
                 <div className="recipe-admin">
                     {this.state.modal 
-                    ? <button onClick={this.cancelEdit}>Close</button>
-                    : <button onClick={this.editRecipe}>Edit Recipe</button>}
-                    <button onClick={this.deleteRecipe}>Delete Recipe</button>
+                    ? <button title="Close edit form" onClick={this.cancelEdit}>Close</button>
+                    : <button title="Edit Recipe" onClick={this.editRecipe}>Edit Recipe</button>}
+                    <button title="Delete Recipe" onClick={this.deleteRecipe}>Delete Recipe</button>
                 </div>
                 <div className="recipe-modal">
                     {this.state.modal}
-                    {this.state.modal && <button onClick={this.cancelEdit} className="btn">Cancel</button>}
+                    {this.state.modal && <button title="Close edit form" onClick={this.cancelEdit} className="btn">Cancel</button>}
                 </div>
             </div>
         )

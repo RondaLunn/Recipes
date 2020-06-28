@@ -1,4 +1,5 @@
 import React, {Component, Fragment} from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as firebase from "firebase/app"
 import "firebase/auth"
@@ -171,12 +172,12 @@ class Login extends Component {
           <Fragment>
             {authedUser
              ? <div className="authedUser-info">
-                <p>Logged in as {authedUser.name} </p>
-                <button className='logout-btn' onClick={this.handleLogOut}>Log out</button>
+                <p>Logged in as <Link to='/profile'>{authedUser.name}</Link> </p>
+                <button title="Log Out" className='logout-btn' onClick={this.handleLogOut}>Log Out</button>
             </div>
             : <div className="recipe-login">
                 <h3 className='center'>{this.state.type === 'login' ? 'Log in' : 'Register'}</h3>
-                <button onClick={this.toggleLogin}>{this.state.type === 'login' ? 'New to Recipes? Click here to Register.' : 'Already have an account? Click here to Log In'}</button>
+                <button title={this.state.type === 'login' ? 'Register new user' : 'Login existing user'} onClick={this.toggleLogin}>{this.state.type === 'login' ? 'New to Recipes? Click here to Register.' : 'Already have an account? Click here to Log In'}</button>
                 <div className="recipe-info">{this.state.message}</div>
                 <div className="recipe-login-form">
                 <label htmlFor="email">Email:</label>
@@ -213,9 +214,9 @@ class Login extends Component {
                   <label for="remember">Keep me signed in (Do not use on a public device)</label>
                 </div>} */}
                 {this.state.type === 'login' 
-                ? <button className="btn" name="login" onClick={this.login}>Log In</button>
-                : <button className="btn" name="register" onClick={this.register}>Register</button>}
-                <button onClick={this.sendPasswordReset}><p>Forgot Password?</p></button>
+                ? <button title="Submit Log In" className="btn" name="login" onClick={this.login}>Log In</button>
+                : <button title="Submit Registration" className="btn" name="register" onClick={this.register}>Register</button>}
+                <button title="Reset your password" onClick={this.sendPasswordReset}><p>Forgot Password?</p></button>
                 </div>
             </div>
           }

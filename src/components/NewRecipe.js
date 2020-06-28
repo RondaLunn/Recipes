@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { handleAddRecipe, handleUpdateRecipe } from '../actions/recipes'
 import { withRouter } from 'react-router-dom'
@@ -263,8 +263,11 @@ class NewRecipe extends Component {
     }
 
     render() {
+        const { authedUser } = this.props
         return (
             <div className="recipe">
+                {authedUser 
+                ? <Fragment>
                 <h3 className='center'>{this.state.header}</h3>
                 <div className='recipe-form-container'>
                     <form className='recipe-form' onSubmit={this.handleSubmit}>
@@ -327,7 +330,7 @@ class NewRecipe extends Component {
                             placeholder='Ingredient' 
                             onKeyPress={e => this.keyPressed(e, 'ingredients')}
                             />
-                            <button className='add-btn' onKeyPress={this.keyPressed} onClick={e => this.handleAddLine(e, 'ingredients')}>+</button>
+                            <button title='Add Line Item' className='add-btn' onKeyPress={this.keyPressed} onClick={e => this.handleAddLine(e, 'ingredients')}>+</button>
                             </div>
                             <div>
                             {this.state.ingredients.map(ingredient => (
@@ -349,7 +352,7 @@ class NewRecipe extends Component {
                             placeholder='Step' 
                             onKeyPress={e => this.keyPressed(e, 'instructions')}
                             />
-                            <button className='add-btn' onClick={e => this.handleAddLine(e, 'instructions')}>+</button>
+                            <button title='Add Line Item' className='add-btn' onClick={e => this.handleAddLine(e, 'instructions')}>+</button>
                             </div><div>
                             {this.state.instructions.map(step => (
                                 <div key={step}>
@@ -390,7 +393,7 @@ class NewRecipe extends Component {
                                 onKeyPress={this.imageKeyPressed}
                                 />
                             </div>
-                            <button className='add-btn' onClick={e => this.handleAddImage(e)}>+</button>
+                            <button title='Add Line Item' className='add-btn' onClick={e => this.handleAddImage(e)}>+</button>
                             </div><div>
                             {this.state.images.map(image => (
                                 <div key={image.url}>
@@ -410,7 +413,7 @@ class NewRecipe extends Component {
                             placeholder='chicken, gluten-free, vegan, etc.' 
                             onKeyPress={e => this.keyPressed(e, 'tags')} 
                             />
-                            <button className='add-btn' onClick={e => this.handleAddLine(e, 'tags')}>+</button>
+                            <button title='Add Line Item' className='add-btn' onClick={e => this.handleAddLine(e, 'tags')}>+</button>
                         </div><div>
                         {this.state.tags.map(tag => (
                             <div key={tag}>
@@ -421,12 +424,21 @@ class NewRecipe extends Component {
 
                         <button 
                         className='btn' 
+                        title='Submit new recipe'
                         >Submit</button>
                     </form>
                 </div>
+            </Fragment>
+            : <p className='center'>Please Log in to create a new recipe.</p>}
             </div>
         )
     }
 }
 
-export default withRouter(connect()(NewRecipe))
+function mapStateToProps( { authedUser } ){
+    return { 
+        authedUser,
+    }
+  }
+
+export default withRouter(connect(mapStateToProps)(NewRecipe))

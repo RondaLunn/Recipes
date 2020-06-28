@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { categories } from '../utils/api'
 
 import RecipeThumb from './RecipeThumb'
+import Search from './Search'
 
 class RecipeList extends Component {
     state = {
@@ -72,6 +73,10 @@ class RecipeList extends Component {
         )
     }
 
+    handleSearch = (recipeList) => {
+        this.setState({recipeList})
+    }
+
     componentDidMount() {
         const { recipeIds, favorites } = this.props
 
@@ -87,25 +92,26 @@ class RecipeList extends Component {
         : this.state.recipeList
         return (
             <div className='dashboard'>
+                <Search search={this.handleSearch}/>
                 <div className="filter-list">
                     Filter by: 
-                    <button style={favorites ? {color: 'blue'} : {}} onClick={this.handleToggleFavorites}>Favorites</button>
+                    <button title='Filter by favorites' style={favorites ? {color: 'blue'} : {}} onClick={this.handleToggleFavorites}>Favorites</button>
                     <label for="category">Category: </label>
-                    <select name="category" id="category" value={this.state.category} onChange={this.handleCategoryFilter}>
-                        <option value='all'>Show All</option>
+                    <select title='Filter by category' name="category" id="category" className='filter-select' value={this.state.category} onChange={this.handleCategoryFilter}>
+                        <option title='Show all recipes' value='all'>Show All</option>
                         {categories.map(category => (
-                            <option key={category} value={category}>{category}</option>
+                            <option title={category} key={category} value={category}>{category}</option>
                         ))}
                     </select>
                 </div>
                 <div className="sort-list">
                     Sort by: 
-                    <button style={sort === 'az' ? {color: 'blue'} : {}} onClick={this.handleAZSort}>A-Z</button>
-                    <button style={sort === 'recent' ? {color: 'blue'} : {}}onClick={this.handleRecentSort}>Recent</button>
-                    <button style={sort === 'popular' ? {color: 'blue'} : {}}onClick={this.handlePopularSort}>Popular</button>
+                    <button title='Sort Alphabetically' style={sort === 'az' ? {color: 'blue'} : {}} onClick={this.handleAZSort}>A-Z</button>
+                    <button title='Sort by most recent' style={sort === 'recent' ? {color: 'blue'} : {}}onClick={this.handleRecentSort}>Recent</button>
+                    <button title='Sort by most favorited' style={sort === 'popular' ? {color: 'blue'} : {}}onClick={this.handlePopularSort}>Popular</button>
                 </div>
                 {recipeList.length > 0 
-                ? <ul className='dashboard'>
+                ? <ul className='recipe-list'>
                     {recipeList.map(id => (
                         <li key={id}>
                             <RecipeThumb id={id} />
