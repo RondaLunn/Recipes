@@ -76,7 +76,9 @@ class App extends Component {
 
                 <Route path='/recipes/:recipe_id' component={RecipePage}/>
 
-                <Route path='/author/:author' component={Author}/>
+                <Route path='/author/:author_id' component={Author}/>
+
+                <Route path='/cookbook/:cookbook_id' component={Author}/>
                 
                 <Route component={NotFound} />
               </Switch>

@@ -6,17 +6,20 @@ import RecipeList from './RecipeList'
 const Author = (props) => {
     return (
         <div>
-            <h3 className='center'>{`${props.author.replace(/_/g, " ")}'s Recipes`}</h3>
-            <RecipeList recipeIds={props.recipeIds ? props.recipeIds.filter(recipe => props.recipes[recipe].author.replace(/[\W_]+/g, '_') === props.author) : []} />
+            <h3 className='center'>{`${props.author}'s Recipes`}</h3>
+            <RecipeList recipeIds={props.recipeIds} />
         </div>
     )
 }
 
 function mapStateToProps( { recipes }, props ){
-    const { author } = props.match.params
+    const { author_id } = props.match.params
+    const recipeIds = Object.keys(recipes).filter(recipe => recipes[recipe].uid === author_id)
+    const author = recipes[recipeIds[0]].author
     return { 
-        recipeIds: Object.keys(recipes),
+        recipeIds,
         recipes,
+        author_id,
         author
     }
   }

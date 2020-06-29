@@ -85,7 +85,7 @@ class Recipe extends Component {
                 {authedUser && 
                 <Fragment>{favorite ? <FavoriteIcon alt='Add to Favorites' onClick={this.handleRemoveFavorite} /> : <FavoriteBorderIcon onClick={this.handleFavorite}/>}</Fragment>
                 }</div>
-                <p className='center'>Added by <Link to={`/author/${author.replace(/[\W_]+/g, '_')}`}>{author}</Link></p>
+                <p className='center'>Added by <Link to={`/author/${uid}`}>{author}</Link></p>
                 {user === uid && <AdminPanel id={this.props.id}/>}
                 
                 <div className='recipe-info'>
